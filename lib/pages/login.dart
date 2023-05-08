@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotncold/header.dart';
 
 // ignore: use_key_in_widget_constructors
 class LoginPage extends StatefulWidget {
@@ -19,10 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Hot N' Cold"),
-      ),
+      appBar: header(context),
       body: Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -30,10 +28,10 @@ class _LoginPageState extends State<LoginPage> {
                   Color.fromARGB(255, 44, 124, 228),
                   Color.fromARGB(255, 201, 42, 31)
                 ],
-                begin: FractionalOffset.topLeft,
-                end: FractionalOffset.bottomRight,
+                begin: FractionalOffset.centerLeft,
+                end: FractionalOffset.centerRight,
                 stops: [0.0, 1.0],
-                tileMode: TileMode.decal)),
+                tileMode: TileMode.clamp)),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +96,10 @@ class _LoginPageState extends State<LoginPage> {
                   ])
                 ],
               ),
-              const Text("Please register if you don't have an account."),
+              const Text(
+                "Please register if you don't have an account.",
+                style: TextStyle(color: Colors.white),
+              ),
             ],
           ),
         ),

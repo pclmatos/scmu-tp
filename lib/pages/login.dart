@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hotncold/header.dart';
+import 'package:hotncold/models/header.dart';
+import 'package:hotncold/models/background.dart';
+import 'package:hotncold/pages/register.dart';
 
 // ignore: use_key_in_widget_constructors
 class LoginPage extends StatefulWidget {
@@ -22,16 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: header(context),
       body: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 44, 124, 228),
-                  Color.fromARGB(255, 201, 42, 31)
-                ],
-                begin: FractionalOffset.centerLeft,
-                end: FractionalOffset.centerRight,
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp)),
+        decoration: background(),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +85,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Column(children: [
                     ElevatedButton(
-                        onPressed: () {}, child: const Text("Register")),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterPage()));
+                        },
+                        child: const Text("Register")),
                   ])
                 ],
               ),

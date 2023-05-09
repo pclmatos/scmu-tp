@@ -15,6 +15,11 @@ class _GameRoomState extends State<GameRoom> {
       appBar: header(context),
       body: Container(
         decoration: background(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[],
+        ),
       ),
     );
   }

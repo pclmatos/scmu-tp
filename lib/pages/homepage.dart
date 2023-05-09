@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
+import 'package:http/http.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

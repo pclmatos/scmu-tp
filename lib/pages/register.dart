@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotncold/messages.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
 
@@ -100,18 +101,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             pwd = pwdController.text;
                             confirm = confirmController.text;
                           });
-
-                          if (name == null || name == "") {
+                          if (name == "" ||
+                              pwd == "" ||
+                              confirm == "" ||
+                              confirm.compareTo(pwd) < 0) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Container(
-                                padding: const EdgeInsets.all(16),
-                                height: 50,
-                                decoration: const BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: const Text("no name"),
-                              ),
+                              content:
+                                  errorMessage(context, name, pwd, confirm),
                               behavior: SnackBarBehavior.floating,
                               backgroundColor: Colors.transparent,
                               elevation: 0,

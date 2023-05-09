@@ -70,18 +70,21 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      ElevatedButton(
-                        child: const Text("Login"),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
-                          setState(() {
-                            name = nameController.text;
-                            pwd = pwdController.text;
-                          });
-                        },
+                      SizedBox(
+                        width: 90,
+                        child: ElevatedButton(
+                          child: const Text("Login"),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()));
+                            setState(() {
+                              name = nameController.text;
+                              pwd = pwdController.text;
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -89,14 +92,17 @@ class _LoginPageState extends State<LoginPage> {
                     width: 10,
                   ),
                   Column(children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterPage()));
-                        },
-                        child: const Text("Register")),
+                    SizedBox(
+                      width: 90,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterPage()));
+                          },
+                          child: const Text("Register")),
+                    ),
                   ])
                 ],
               ),

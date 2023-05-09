@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
+import 'package:hotncold/pages/homepage.dart';
 import 'package:hotncold/pages/register.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -72,6 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                       ElevatedButton(
                         child: const Text("Login"),
                         onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomePage()));
                           setState(() {
                             name = nameController.text;
                             pwd = pwdController.text;

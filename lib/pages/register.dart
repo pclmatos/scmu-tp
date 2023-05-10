@@ -3,6 +3,8 @@ import 'package:hotncold/messages/messages.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
 
+import 'package:http/http.dart' as http;
+
 // ignore: use_key_in_widget_constructors
 class RegisterPage extends StatefulWidget {
   @override
@@ -19,9 +21,36 @@ class _RegisterPageState extends State<RegisterPage> {
   var name;
   // ignore: prefer_typing_uninitialized_variables
   var pwd;
-
   // ignore: prefer_typing_uninitialized_variables
   var confirm;
+
+  register(String username, String password, String confirm) async {
+    const uri = 'http://170.187.189.36:8080/myApp/register';
+    var map = <String, dynamic>{};
+
+    map['username'] = username;
+    map['password'] = password;
+    map['confirm'] = confirm;
+
+    http.Response response = await http.post(
+      Uri.parse(uri),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: map,
+    );
+
+    print(response.body);
+    if (response.statusCode == 400) {
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: postError(response.body),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +82,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(
                 width: 300,
-                child: TextField(
+                child: TextFormField(
+                  obscureText: true,
                   style: const TextStyle(color: Colors.white),
                   controller: pwdController,
                   decoration: const InputDecoration(
@@ -73,7 +103,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(
                 width: 300,
-                child: TextField(
+                child: TextFormField(
+                  obscureText: true,
                   style: const TextStyle(color: Colors.white),
                   controller: confirmController,
                   decoration: const InputDecoration(
@@ -96,6 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ElevatedButton(
                         child: const Text("Submit"),
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           setState(() {
                             name = nameController.text;
                             pwd = pwdController.text;
@@ -104,7 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           if (name == "" ||
                               pwd == "" ||
                               confirm == "" ||
-                              confirm.compareTo(pwd) < 0) {
+                              pwd.compareTo(confirm) < 0) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content:
                                   errorMessage(context, name, pwd, confirm),
@@ -112,6 +144,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               backgroundColor: Colors.transparent,
                               elevation: 0,
                             ));
+                          } else {
+                            register(name, pwd, confirm);
+                            Navigator.pop(context);
                           }
                         },
                       ),

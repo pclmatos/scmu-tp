@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hotncold/messages/messages.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
 import 'package:hotncold/pages/homepage.dart';
 import 'package:hotncold/pages/register.dart';
+
+import 'package:http/http.dart' as http;
 
 // ignore: use_key_in_widget_constructors
 class LoginPage extends StatefulWidget {
@@ -19,6 +22,42 @@ class _LoginPageState extends State<LoginPage> {
   var name;
   // ignore: prefer_typing_uninitialized_variables
   var pwd;
+
+  var result;
+
+  login(String username, String password) async {
+    const uri = 'http://170.187.189.36:8080/myApp/login';
+    var map = <String, dynamic>{};
+
+    map['username'] = username;
+    map['password'] = password;
+
+    http.Response response = await http.post(
+      Uri.parse(uri),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: map,
+    );
+
+    print(response.statusCode);
+
+    if (response.statusCode == 400) {
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: postError(response.body),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ));
+    } else {
+      setState(
+        () {
+          result = response.statusCode;
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: 300,
                 child: TextField(
+                  obscureText: true,
                   style: const TextStyle(color: Colors.white),
                   controller: pwdController,
                   decoration: const InputDecoration(
@@ -75,14 +115,20 @@ class _LoginPageState extends State<LoginPage> {
                         child: ElevatedButton(
                           child: const Text("Login"),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()));
+                            FocusScope.of(context).unfocus();
                             setState(() {
                               name = nameController.text;
                               pwd = pwdController.text;
                             });
+                            login(name, pwd);
+                            print(result);
+                            if (result == 200) {
+                              print(result);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()));
+                            }
                           },
                         ),
                       ),

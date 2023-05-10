@@ -24,14 +24,14 @@ String message(String name, String pwd, String confirm) {
     error = "Please provide a password.";
   } else if (confirm == "") {
     error = "Please confirm your password.";
-  } else if (confirm.compareTo(pwd) < 0) {
+  } else if (pwd.compareTo(confirm) < 0) {
     error = "Password and confirmation don't match.";
   }
 
   return error;
 }
 
-Container postError(BuildContext context, String message) {
+Container postError(String message) {
   return Container(
     padding: const EdgeInsets.all(16),
     decoration: const BoxDecoration(

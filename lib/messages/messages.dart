@@ -30,3 +30,17 @@ String message(String name, String pwd, String confirm) {
 
   return error;
 }
+
+Container postError(BuildContext context, String message) {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: const BoxDecoration(
+      color: Colors.red,
+      borderRadius: BorderRadius.all(Radius.circular(15)),
+    ),
+    child: Text(
+      message,
+      textAlign: TextAlign.center,
+    ),
+  );
+}

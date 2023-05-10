@@ -22,42 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   var name;
   // ignore: prefer_typing_uninitialized_variables
   var pwd;
-
+  // ignore: prefer_typing_uninitialized_variables
   var result;
-
-  login(String username, String password) async {
-    const uri = 'http://170.187.189.36:8080/myApp/login';
-    var map = <String, dynamic>{};
-
-    map['username'] = username;
-    map['password'] = password;
-
-    http.Response response = await http.post(
-      Uri.parse(uri),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: map,
-    );
-
-    print(response.statusCode);
-
-    if (response.statusCode == 400) {
-      // ignore: use_build_context_synchronously
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: postError(response.body),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ));
-    } else {
-      setState(
-        () {
-          result = response.statusCode;
-        },
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,20 +80,31 @@ class _LoginPageState extends State<LoginPage> {
                         width: 90,
                         child: ElevatedButton(
                           child: const Text("Login"),
-                          onPressed: () {
+                          onPressed: () async {
                             FocusScope.of(context).unfocus();
                             setState(() {
                               name = nameController.text;
                               pwd = pwdController.text;
                             });
-                            login(name, pwd);
-                            print(result);
-                            if (result == 200) {
-                              print(result);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()));
+                            if (name == "" || pwd == "") {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: loginMessage(context, name, pwd),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ));
+                            } else {
+                              await login(name, pwd);
+                              if (result == 200) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage(
+                                              username: name,
+                                            )));
+                              }
                             }
                           },
                         ),
@@ -161,5 +138,36 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  login(String username, String password) async {
+    const uri = 'http://170.187.189.36:8080/myApp/login';
+    var map = <String, dynamic>{};
+
+    map['username'] = username;
+    map['password'] = password;
+
+    http.Response response = await http.post(
+      Uri.parse(uri),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: map,
+    );
+
+    setState(
+      () {
+        result = response.statusCode;
+      },
+    );
+    if (response.statusCode == 400) {
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: postError(response.body),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ));
+    }
   }
 }

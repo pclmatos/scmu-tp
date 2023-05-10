@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 AppBar header(context) {
   return AppBar(
       centerTitle: true,
+      automaticallyImplyLeading: false,
       backgroundColor: const Color.fromARGB(255, 207, 207, 207),
       title: Text(
         "Hot N' Cold",

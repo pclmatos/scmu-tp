@@ -24,34 +24,6 @@ class _RegisterPageState extends State<RegisterPage> {
   // ignore: prefer_typing_uninitialized_variables
   var confirm;
 
-  register(String username, String password, String confirm) async {
-    const uri = 'http://170.187.189.36:8080/myApp/register';
-    var map = <String, dynamic>{};
-
-    map['username'] = username;
-    map['password'] = password;
-    map['confirm'] = confirm;
-
-    http.Response response = await http.post(
-      Uri.parse(uri),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: map,
-    );
-
-    print(response.body);
-    if (response.statusCode == 400) {
-      // ignore: use_build_context_synchronously
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: postError(response.body),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               pwd.compareTo(confirm) < 0) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content:
-                                  errorMessage(context, name, pwd, confirm),
+                                  registerMessage(context, name, pwd, confirm),
                               behavior: SnackBarBehavior.floating,
                               backgroundColor: Colors.transparent,
                               elevation: 0,
@@ -159,5 +131,32 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  register(String username, String password, String confirm) async {
+    const uri = 'http://170.187.189.36:8080/myApp/register';
+    var map = <String, dynamic>{};
+
+    map['username'] = username;
+    map['password'] = password;
+    map['confirm'] = confirm;
+
+    http.Response response = await http.post(
+      Uri.parse(uri),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: map,
+    );
+
+    if (response.statusCode == 400) {
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: postError(response.body),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ));
+    }
   }
 }

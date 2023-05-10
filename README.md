@@ -1,4 +1,4 @@
-# hotncold
+# Hot N' Cold
 
 A new Flutter project.
 

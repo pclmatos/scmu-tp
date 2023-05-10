@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
-import 'package:http/http.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HowToPlay extends StatelessWidget {
   const HowToPlay({super.key});
@@ -57,9 +55,6 @@ class HowToPlay extends StatelessWidget {
   Padding print(String text) {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Text(text,
-            style: const TextStyle(
-              color: Colors.white,
-            )));
+        child: AutoSizeText(text, style: const TextStyle(color: Colors.white)));
   }
 }

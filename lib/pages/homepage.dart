@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
+import 'package:hotncold/pages/game_room.dart';
 import 'package:http/http.dart' as http;
 
 import 'how_to_play.dart';
@@ -32,7 +33,12 @@ class _HomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   child: const Text("Join Game Room",
                       style: TextStyle(fontSize: 20)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const GameRoom()));
+                  },
                 ),
               ),
               const SizedBox(

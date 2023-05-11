@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hotncold/models/header.dart';
-import 'package:hotncold/models/background.dart';
+import 'package:hotncold/pages/tools/header.dart';
+import 'package:hotncold/pages/tools/background.dart';
 
 class HowToPlay extends StatelessWidget {
   const HowToPlay({super.key});

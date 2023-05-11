@@ -1,29 +1,30 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:hotncold/messages/messages.dart';
-import 'package:hotncold/models/header.dart';
-import 'package:hotncold/models/background.dart';
-import 'package:hotncold/pages/homepage.dart';
-import 'package:hotncold/pages/register.dart';
+import 'package:hotncold/pages/tools/header.dart';
+import 'package:hotncold/pages/tools/background.dart';
+import 'package:hotncold/pages/authenticate/register.dart';
+import 'package:hotncold/pages/wrapper.dart';
+import 'package:hotncold/services/auth.dart';
 
-import 'package:http/http.dart' as http;
-
-// ignore: use_key_in_widget_constructors
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController nameController = TextEditingController();
+  final AuthService auth = AuthService();
+
+  TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
 
-  // ignore: prefer_typing_uninitialized_variables
-  var name;
-  // ignore: prefer_typing_uninitialized_variables
-  var pwd;
-  // ignore: prefer_typing_uninitialized_variables
-  var result;
+  String email = '';
+  String pwd = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +38,11 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               SizedBox(
                 width: 300,
-                child: TextField(
+                child: TextFormField(
+                  controller: emailController,
                   style: const TextStyle(color: Colors.white),
-                  controller: nameController,
                   decoration: const InputDecoration(
-                    hintText: "Enter your name",
+                    hintText: "Email",
                     hintStyle: TextStyle(color: Colors.white),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
@@ -55,12 +56,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(
                 width: 300,
-                child: TextField(
+                child: TextFormField(
+                  controller: pwdController,
                   obscureText: true,
                   style: const TextStyle(color: Colors.white),
-                  controller: pwdController,
                   decoration: const InputDecoration(
-                    hintText: "Enter your password",
+                    hintText: "Password",
                     hintStyle: TextStyle(
                       color: Colors.white,
                     ),
@@ -79,35 +80,42 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         width: 90,
                         child: ElevatedButton(
-                          child: const Text("Login"),
-                          onPressed: () async {
-                            FocusScope.of(context).unfocus();
-                            setState(() {
-                              name = nameController.text;
-                              pwd = pwdController.text;
-                            });
-                            if (name == "" || pwd == "") {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: loginMessage(context, name, pwd),
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.transparent,
-                                elevation: 0,
-                              ));
-                            } else {
-                              await login(name, pwd);
-                              if (result == 200) {
-                                // ignore: use_build_context_synchronously
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomePage(
-                                              username: name,
-                                            )));
+                            child: const Text("Login"),
+                            onPressed: () async {
+                              FocusScope.of(context).unfocus();
+                              setState(() {
+                                email = emailController.text;
+                                pwd = pwdController.text;
+                              });
+                              if (validateCredentials(email, pwd)) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: loginMessage(context, email, pwd),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                ));
+                              } else {
+                                dynamic result = await auth
+                                    .signInEmailAndPassword(email, pwd);
+                                print("user   " + result.toString());
+                                if (result != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Wrapper()));
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(error),
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                  ));
+                                }
                               }
-                            }
-                          },
-                        ),
+                            }),
                       ),
                     ],
                   ),
@@ -140,34 +148,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  login(String username, String password) async {
-    const uri = 'http://170.187.189.36:8080/myApp/login';
-    var map = <String, dynamic>{};
-
-    map['username'] = username;
-    map['password'] = password;
-
-    http.Response response = await http.post(
-      Uri.parse(uri),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: map,
-    );
-
-    setState(
-      () {
-        result = response.statusCode;
-      },
-    );
-    if (response.statusCode == 400) {
-      // ignore: use_build_context_synchronously
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: postError(response.body),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ));
-    }
+  bool validateCredentials(String email, String pwd) {
+    return email == "" || pwd == "";
   }
 }

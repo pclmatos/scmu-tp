@@ -1,28 +1,30 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:hotncold/messages/messages.dart';
-import 'package:hotncold/models/header.dart';
-import 'package:hotncold/models/background.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:hotncold/pages/authenticate/login.dart';
+import 'package:hotncold/pages/tools/header.dart';
+import 'package:hotncold/pages/tools/background.dart';
+import 'package:hotncold/services/auth.dart';
 
 // ignore: use_key_in_widget_constructors
 class RegisterPage extends StatefulWidget {
   @override
   // ignore: library_private_types_in_public_api
-  _RegisterPageState createState() => _RegisterPageState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController nameController = TextEditingController();
+class _RegisterState extends State<RegisterPage> {
+  final AuthService auth = AuthService();
+
+  TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
   TextEditingController confirmController = TextEditingController();
 
-  // ignore: prefer_typing_uninitialized_variables
-  var name;
-  // ignore: prefer_typing_uninitialized_variables
-  var pwd;
-  // ignore: prefer_typing_uninitialized_variables
-  var confirm;
+  String email = '';
+  String pwd = '';
+  String confirm = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +38,11 @@ class _RegisterPageState extends State<RegisterPage> {
             children: <Widget>[
               SizedBox(
                 width: 300,
-                child: TextField(
+                child: TextFormField(
+                  controller: emailController,
                   style: const TextStyle(color: Colors.white),
-                  controller: nameController,
                   decoration: const InputDecoration(
-                    hintText: "Enter your name",
+                    hintText: "Email",
                     hintStyle: TextStyle(color: Colors.white),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)),
@@ -55,11 +57,16 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(
                 width: 300,
                 child: TextFormField(
+                  controller: pwdController,
                   obscureText: true,
                   style: const TextStyle(color: Colors.white),
-                  controller: pwdController,
+                  onChanged: (val) {
+                    setState(() {
+                      pwd = val;
+                    });
+                  },
                   decoration: const InputDecoration(
-                    hintText: "Enter your password",
+                    hintText: "Password",
                     hintStyle: TextStyle(
                       color: Colors.white,
                     ),
@@ -76,9 +83,14 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(
                 width: 300,
                 child: TextFormField(
+                  controller: confirmController,
                   obscureText: true,
                   style: const TextStyle(color: Colors.white),
-                  controller: confirmController,
+                  onChanged: (val) {
+                    setState(() {
+                      confirm = val;
+                    });
+                  },
                   decoration: const InputDecoration(
                     hintText: "Confirm password",
                     hintStyle: TextStyle(
@@ -98,27 +110,42 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: <Widget>[
                       ElevatedButton(
                         child: const Text("Submit"),
-                        onPressed: () {
+                        onPressed: () async {
                           FocusScope.of(context).unfocus();
                           setState(() {
-                            name = nameController.text;
+                            email = emailController.text;
                             pwd = pwdController.text;
                             confirm = confirmController.text;
                           });
-                          if (name == "" ||
-                              pwd == "" ||
-                              confirm == "" ||
-                              pwd.compareTo(confirm) < 0) {
+                          if (validateCredentials(email, pwd, confirm)) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content:
-                                  registerMessage(context, name, pwd, confirm),
+                                  registerMessage(context, email, pwd, confirm),
                               behavior: SnackBarBehavior.floating,
                               backgroundColor: Colors.transparent,
                               elevation: 0,
                             ));
                           } else {
-                            register(name, pwd, confirm);
-                            Navigator.pop(context);
+                            dynamic result = await auth
+                                .registerWithEmailAnPassword(email, pwd);
+                            if (result == null) {
+                              setState(() {
+                                error = 'Please provide a valid email';
+                              });
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(error),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginPage(),
+                                  ));
+                            }
                           }
                         },
                       ),
@@ -133,30 +160,10 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  register(String username, String password, String confirm) async {
-    const uri = 'http://170.187.189.36:8080/myApp/register';
-    var map = <String, dynamic>{};
-
-    map['username'] = username;
-    map['password'] = password;
-    map['confirm'] = confirm;
-
-    http.Response response = await http.post(
-      Uri.parse(uri),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: map,
-    );
-
-    if (response.statusCode == 400) {
-      // ignore: use_build_context_synchronously
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: postError(response.body),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ));
-    }
+  bool validateCredentials(String email, String pwd, String confirm) {
+    return email == "" ||
+        pwd == "" ||
+        confirm == "" ||
+        pwd.compareTo(confirm) != 0;
   }
 }

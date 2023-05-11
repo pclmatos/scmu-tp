@@ -1,22 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:hotncold/models/header.dart';
-import 'package:hotncold/models/background.dart';
-import 'package:hotncold/pages/game_room.dart';
-import 'package:http/http.dart' as http;
+import 'package:hotncold/pages/tools/header.dart';
+import 'package:hotncold/pages/tools/background.dart';
+import 'package:hotncold/pages/how_to_play.dart';
+import 'package:hotncold/services/auth.dart';
 
-import 'how_to_play.dart';
+class HomePage extends StatelessWidget {
+  final String uid;
+  final AuthService auth = AuthService();
 
-class HomePage extends StatefulWidget {
-  final String username;
+  HomePage({super.key, required this.uid});
 
-  const HomePage({Key? key, required this.username}) : super(key: key);
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +28,7 @@ class _HomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   child: const Text("Join Game Room",
                       style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const GameRoom()));
-                  },
+                  onPressed: () async {},
                 ),
               ),
               const SizedBox(
@@ -71,8 +61,7 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () async {
-                      await logout();
-                      // ignore: use_build_context_synchronously
+                      auth.signOut();
                       Navigator.pop(context);
                     }),
               ),
@@ -80,21 +69,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-    );
-  }
-
-  logout() async {
-    const uri = 'http://170.187.189.36:8080/myApp/logout';
-
-    var map = <String, dynamic>{};
-    map["username"] = widget.username;
-
-    http.Response response = await http.post(
-      Uri.parse(uri),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: map,
     );
   }
 }

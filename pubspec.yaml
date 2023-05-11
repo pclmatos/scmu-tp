@@ -18,6 +18,8 @@ dependencies:
   connectivity: ^3.0.6
   auto_size_text: ^3.0.0
   web_socket_channel: ^2.4.0
+  firebase_core: ^2.11.0
+  firebase_auth: ^4.5.0
 
 dev_dependencies:
   flutter_test:

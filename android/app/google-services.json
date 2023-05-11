@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "881630426053",
+    "project_id": "hotncold-9f6ab",
+    "storage_bucket": "hotncold-9f6ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881630426053:android:9d66397764c02d64f3d1ac",
+        "android_client_info": {
+          "package_name": "com.example.hotncold"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881630426053-07c0iqn8dq895eash4frnc3tctli2ltg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkQZF9sqKSrddeNTOz888_o59hwiuvLfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "881630426053-07c0iqn8dq895eash4frnc3tctli2ltg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

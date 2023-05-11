@@ -12,7 +12,7 @@ class _GameRoomState extends State<GameRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context),
+      appBar: header(context, false),
       body: Container(
         decoration: background(),
         child: Column(

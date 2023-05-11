@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/header.dart';
 import 'package:hotncold/models/background.dart';
@@ -21,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context),
+      appBar: header(context, false),
       body: Container(
         decoration: background(),
         child: Center(

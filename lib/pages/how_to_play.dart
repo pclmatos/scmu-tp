@@ -8,7 +8,7 @@ class HowToPlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context),
+      appBar: header(context, true),
       body: Container(
         decoration: background(),
         child: Center(

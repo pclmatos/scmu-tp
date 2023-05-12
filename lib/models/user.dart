@@ -3,4 +3,10 @@ class MyUser {
   final String? email;
 
   MyUser({required this.uid, required this.email});
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "MyUser {uid=$uid, email=$email}";
+  }
 }

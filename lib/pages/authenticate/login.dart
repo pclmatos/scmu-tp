@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:hotncold/messages/messages.dart';
+import 'package:hotncold/messages/errors.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/authenticate/register.dart';

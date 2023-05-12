@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/tools/header.dart';
@@ -33,7 +31,7 @@ class HomePage extends StatelessWidget {
                   child: const Text("Join Game Room",
                       style: TextStyle(fontSize: 20)),
                   onPressed: () async {
-                    Connection().connect();
+                    Connection().connect(user.email);
                   },
                 ),
               ),

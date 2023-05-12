@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 class Connection {
-  void connect() async {
-    final socket = await Socket.connect("170.187.189.36", 5000);
-    print("Connected to: ${socket.remoteAddress.address}:${socket.remotePort}");
+  late Socket socket;
+
+  void connect(String? email) async {
+    socket = await Socket.connect("170.187.189.36", 5000);
+    print(
+        "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
 
     socket.listen((Uint8List data) {
       final serverResponse = String.fromCharCodes(data);
@@ -17,6 +21,14 @@ class Connection {
       socket.destroy();
     });
 
-    //socket.add(data)
+    socket.add(utf8.encode(email!));
   }
+
+  /*String handleMessage(String message){
+    switch(message){
+      case: "Email":
+        
+        break;
+    }
+  }*/
 }

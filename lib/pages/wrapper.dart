@@ -12,12 +12,11 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
-    print(user);
-
+    print(user?.email);
     if (user == null) {
       return const LoginPage();
     } else {
-      return HomePage(uid: user.uid);
+      return HomePage(user: user);
     }
   }
 }

@@ -9,7 +9,7 @@ class AuthService {
 
   MyUser? userFromFireBaseUser(User? user) {
     // ignore: unnecessary_null_comparison
-    return user != null ? MyUser(uid: user.uid) : null;
+    return user != null ? MyUser(uid: user.uid, email: user.email) : null;
   }
 
   Stream<MyUser?> get user {

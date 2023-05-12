@@ -98,7 +98,6 @@ class _LoginPageState extends State<LoginPage> {
                               } else {
                                 dynamic result = await auth
                                     .signInEmailAndPassword(email, pwd);
-                                print("user   " + result.toString());
                                 if (result != null) {
                                   Navigator.push(
                                       context,

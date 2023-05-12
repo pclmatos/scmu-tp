@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
                   child: const Text("Join Game Room",
                       style: TextStyle(fontSize: 20)),
                   onPressed: () async {
-                    Connection().connect(user);
+                    Connection().connect(user.email);
                   },
                 ),
               ),

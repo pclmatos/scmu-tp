@@ -2,12 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:hotncold/models/user.dart';
-
 class Connection {
   late Socket socket;
 
-  void connect(MyUser? user) async {
+  void connect(String? email) async {
     socket = await Socket.connect("170.187.189.36", 5000);
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
@@ -23,7 +21,7 @@ class Connection {
       socket.destroy();
     });
 
-    socket.add(utf8.encode(user.toString()));
+    socket.add(utf8.encode(email!));
   }
 
   /*String handleMessage(String message){

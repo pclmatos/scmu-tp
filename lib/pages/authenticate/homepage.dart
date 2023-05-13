@@ -5,11 +5,13 @@ import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/how_to_play.dart';
+import 'package:hotncold/pages/wrapper.dart';
 import 'package:hotncold/services/auth.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
 
 class HomePage extends StatelessWidget {
   final MyUser user;
+  final Connection conn = Connection();
   final AuthService auth = AuthService();
 
   HomePage({super.key, required this.user});
@@ -31,7 +33,7 @@ class HomePage extends StatelessWidget {
                   child: const Text("Join Game Room",
                       style: TextStyle(fontSize: 20)),
                   onPressed: () async {
-                    Connection().connect(user.email);
+                    conn.connect(user.email);
                   },
                 ),
               ),
@@ -65,8 +67,12 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () async {
-                      auth.signOut();
-                      Navigator.pop(context);
+                      await auth.signOut();
+                      conn.closeConnection();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Wrapper()));
                     }),
               ),
             ],

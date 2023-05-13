@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:hotncold/messages/errors.dart';
-import 'package:hotncold/pages/authenticate/login.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
+import 'package:hotncold/pages/wrapper.dart';
 import 'package:hotncold/services/auth.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -143,7 +143,7 @@ class _RegisterState extends State<RegisterPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
+                                    builder: (context) => const Wrapper(),
                                   ));
                             }
                           }

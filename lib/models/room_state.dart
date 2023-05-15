@@ -7,10 +7,13 @@ class RoomState extends ChangeNotifier {
   List<PlayerEntry> players = [];
   int readyCount = 0;
 
+  RoomState(dynamic players, int readyCount);
+
   void updateRoom(dynamic json) {
     var decodedJson = jsonDecode(json);
-    List<dynamic> playersTmp = decodedJson['players'] as List;
-    readyCount = decodedJson['readyCount'] as int;
+    print(decodedJson);
+    List<dynamic> playersTmp = decodedJson['content']['players'] as List;
+    readyCount = decodedJson['content']['readyCount'] as int;
 
     for (var entry in playersTmp) {
       PlayerEntry pEntry = PlayerEntry.fromJson(entry);
@@ -25,5 +28,14 @@ class RoomState extends ChangeNotifier {
     readyCount = 0;
 
     notifyListeners();
+  }
+
+  factory RoomState.fromJson(dynamic json) {
+    var decodedJson = jsonDecode(json);
+
+    List<dynamic> playersTmp = decodedJson['players'] as List;
+    var ready = decodedJson['readyCount'] as int;
+
+    return RoomState(playersTmp, ready);
   }
 }

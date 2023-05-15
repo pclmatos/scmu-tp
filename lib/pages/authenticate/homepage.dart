@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hotncold/models/room_state.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/game_room.dart';
 import 'package:hotncold/pages/tools/header.dart';

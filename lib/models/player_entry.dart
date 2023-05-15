@@ -9,6 +9,10 @@ class PlayerEntry {
     return PlayerEntry(json['email'] as String, json['state'] as String);
   }
 
+  Map<String, dynamic> toJson() {
+    return {'email': email, 'state': state};
+  }
+
   @override
   String toString() {
     return 'PlayerEntry [email=$email, state=$state]';

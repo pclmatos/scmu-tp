@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       initialData: MyUser(uid: '', email: ''),
       child: ChangeNotifierProvider(
-        create: (context) => RoomState(),
+        create: (context) => RoomState({}, 0),
         child: const MaterialApp(
           title: "Hot n' Cold",
           home: Wrapper(),

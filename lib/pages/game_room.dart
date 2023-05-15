@@ -7,12 +7,15 @@ import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
 import 'package:provider/provider.dart';
 
+import '../models/user.dart';
+
 class GameRoom extends StatelessWidget {
   const GameRoom({super.key});
 
   @override
   Widget build(BuildContext context) {
     var roomState = context.watch<RoomState>();
+    final MyUser user = Provider.of<MyUser>(context);
 
     return Scaffold(
       appBar: header(context, false),
@@ -58,7 +61,7 @@ class GameRoom extends StatelessWidget {
               children: [
                 ElevatedButton(
                     onPressed: () async {
-                      //await Connection().writeMessage()
+                      await Connection().writeMessage('READY', user.email);
                     },
                     child: const Text("Ready")),
                 ElevatedButton(

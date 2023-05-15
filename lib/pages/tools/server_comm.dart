@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
+import 'package:hotncold/messages/player_message.dart';
+import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state.dart';
 import 'package:provider/provider.dart';
 
@@ -23,10 +26,13 @@ class Connection {
     socket = await Socket.connect(host, port);
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
-    writeMessage(email!);
+    var message = PlayerMessage("INIT", PlayerEntry(email!, 'IDLE'));
+    print(jsonEncode(message));
+    socket.write(jsonEncode(message));
 
     socket.listen((Uint8List data) {
       var json = String.fromCharCodes(data);
+      print(json);
       gameState.updateRoom(json);
     }, onError: (error) {
       print("Client: $error");
@@ -48,8 +54,19 @@ class Connection {
     socket.destroy();
   }
 
-  writeMessage(String message) {
-    socket.write(message);
+  writeMessage(String type, String? content) {
+    print(content);
+    var message;
+    switch (type) {
+      case 'INIT':
+        message = PlayerMessage(type, PlayerEntry.fromJson(content));
+        break;
+      case 'READY':
+        message = PlayerMessage(type, PlayerEntry.fromJson(content));
+    }
+    var toSend = jsonEncode(message);
+    print(toSend);
+    socket.write(toSend);
     socket.flush();
   }
 }

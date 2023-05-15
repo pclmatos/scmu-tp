@@ -23,23 +23,19 @@ class Connection {
     socket = await Socket.connect(host, port);
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
+    writeMessage(email!);
 
-    socket.write(email);
-
-    await socket.listen((Uint8List data) {
+    socket.listen((Uint8List data) {
       var json = String.fromCharCodes(data);
-      print(json);
       gameState.updateRoom(json);
     }, onError: (error) {
       print("Client: $error");
       //print("Attempting to reconnect to $host");
-      socket.close();
       socket.destroy();
       Navigator.pop(context);
       //socket = await Socket.connect(host, port);
     }, onDone: () {
       print("Client: Server left.");
-      socket.close();
       socket.destroy();
       Navigator.pop(context);
     });
@@ -47,11 +43,11 @@ class Connection {
 
   closeConnection() {
     print("Closing");
-    socket.close();
     socket.destroy();
   }
 
   writeMessage(String message) {
     socket.write(message);
+    socket.flush();
   }
 }

@@ -9,11 +9,12 @@ class RoomState extends ChangeNotifier {
 
   void updateRoom(dynamic json) {
     var decodedJson = jsonDecode(json);
-    var playersTmp = decodedJson['players'] as List;
+    List<dynamic> playersTmp = decodedJson['players'] as List;
+    readyCount = decodedJson['readyCount'] as int;
 
-    players =
-        playersTmp.map((player) => PlayerEntry.fromJson(playersTmp)).toList();
-    readyCount = decodedJson['readyCount'];
+    for (var entry in playersTmp) {
+      players.add(PlayerEntry.fromJson(entry));
+    }
 
     notifyListeners();
   }

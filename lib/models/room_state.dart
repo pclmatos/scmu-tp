@@ -19,4 +19,11 @@ class RoomState extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void reset() {
+    players = [];
+    readyCount = 0;
+
+    notifyListeners();
+  }
 }

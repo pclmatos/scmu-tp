@@ -32,11 +32,13 @@ class Connection {
       print("Client: $error");
       //print("Attempting to reconnect to $host");
       socket.destroy();
+      gameState.reset();
       Navigator.pop(context);
       //socket = await Socket.connect(host, port);
     }, onDone: () {
       print("Client: Server left.");
       socket.destroy();
+      gameState.reset();
       Navigator.pop(context);
     });
   }

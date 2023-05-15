@@ -21,6 +21,7 @@ class GameRoom extends StatelessWidget {
         decoration: background(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const Padding(
               padding: EdgeInsets.all(20),
@@ -40,17 +41,33 @@ class GameRoom extends StatelessWidget {
                       )
                   ],
                 )),
-            const SizedBox(
-              height: 10,
-              //child: Text(
-              //    style: TextStyle(color: Colors.white),
-              //    '${roomState.readyCount} out of ${roomState.players.length}'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                  width: 200,
+                  child: Text(
+                      style: const TextStyle(color: Colors.white),
+                      '${roomState.readyCount} out of ${roomState.players.length} players are ready!'),
+                ),
+              ],
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Connection().closeConnection();
-                },
-                child: const Text("Leave"))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: () async {
+                      //await Connection().writeMessage()
+                    },
+                    child: const Text("Ready")),
+                ElevatedButton(
+                    onPressed: () {
+                      Connection().closeConnection();
+                    },
+                    child: const Text("Leave"))
+              ],
+            )
           ],
         ),
       ),

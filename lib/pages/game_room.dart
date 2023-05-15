@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
@@ -61,7 +62,7 @@ class GameRoom extends StatelessWidget {
               children: [
                 ElevatedButton(
                     onPressed: () async {
-                      await Connection().writeMessage('READY', user.email);
+                      //await Connection().writeMessage('READY', PlayerEntry(user.email, 'READY'));
                     },
                     child: const Text("Ready")),
                 ElevatedButton(

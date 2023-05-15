@@ -28,7 +28,9 @@ class Connection {
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
     var message = PlayerMessage("INIT", PlayerEntry(email!, 'IDLE'));
     print(jsonEncode(message));
+
     socket.write(jsonEncode(message));
+    socket.flush();
 
     socket.listen((Uint8List data) {
       var json = String.fromCharCodes(data);
@@ -54,7 +56,7 @@ class Connection {
     socket.destroy();
   }
 
-  writeMessage(String type, String? content) {
+  writeMessage(String type, dynamic content) {
     print(content);
     var message;
     switch (type) {
@@ -63,6 +65,9 @@ class Connection {
         break;
       case 'READY':
         message = PlayerMessage(type, PlayerEntry.fromJson(content));
+        break;
+      default:
+        break;
     }
     var toSend = jsonEncode(message);
     print(toSend);

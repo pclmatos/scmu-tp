@@ -13,46 +13,47 @@ class GameRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var roomState = context.watch<RoomState>();
-    print(roomState.readyCount);
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return Scaffold(
-        appBar: header(context, false),
-        body: Container(
-          constraints: const BoxConstraints(maxHeight: 700),
-          decoration: background(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(style: TextStyle(color: Colors.white), "Players"),
-              ),
-              SizedBox(
-                  height: 400,
-                  child: ListView(
-                    children: [
-                      for (var player in roomState.players)
-                        ListTile(
-                          leading: const Icon(Icons.person),
-                          title: Text(
-                              style: const TextStyle(color: Colors.white),
-                              player.email),
-                        )
-                    ],
-                  )),
-              const SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Connection().closeConnection();
-                  },
-                  child: const Text("Leave"))
-            ],
-          ),
+    return Scaffold(
+      appBar: header(context, false),
+      body: Container(
+        constraints: const BoxConstraints(maxHeight: 700),
+        decoration: background(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(style: TextStyle(color: Colors.white), 'Players'),
+            ),
+            SizedBox(
+                height: 500,
+                child: ListView(
+                  children: [
+                    for (var player in roomState.players)
+                      ListTile(
+                        iconColor: Colors.white,
+                        leading: const Icon(Icons.person),
+                        title: Text(
+                            style: const TextStyle(color: Colors.white),
+                            player.email),
+                      )
+                  ],
+                )),
+            const SizedBox(
+              height: 10,
+              //child: Text(
+              //    style: TextStyle(color: Colors.white),
+              //    '${roomState.readyCount} out of ${roomState.players.length}'),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Connection().closeConnection();
+                },
+                child: const Text("Leave"))
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }

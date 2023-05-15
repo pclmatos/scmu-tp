@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/room_state.dart';
 import 'package:hotncold/models/user.dart';
@@ -37,15 +39,11 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(fontSize: 20)),
                   onPressed: () async {
                     await Connection().connect(user.email, context);
+                    sleep(const Duration(seconds: 2));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => Provider<RoomState>(
-                                  create: (_) => RoomState(),
-                                  builder: (context, child) {
-                                    return const GameRoom();
-                                  },
-                                ))));
+                            builder: (context) => const GameRoom()));
                   },
                 ),
               ),

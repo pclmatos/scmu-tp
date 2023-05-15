@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class PlayerEntry {
   String email;
   String state;
@@ -8,7 +6,11 @@ class PlayerEntry {
 
   factory PlayerEntry.fromJson(dynamic json) {
     //var decodedJson = jsonDecode(json);
-    print(json);
     return PlayerEntry(json['email'] as String, json['state'] as String);
+  }
+
+  @override
+  String toString() {
+    return 'PlayerEntry [email=$email, state=$state]';
   }
 }

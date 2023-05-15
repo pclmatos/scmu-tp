@@ -13,7 +13,8 @@ class RoomState extends ChangeNotifier {
     readyCount = decodedJson['readyCount'] as int;
 
     for (var entry in playersTmp) {
-      players.add(PlayerEntry.fromJson(entry));
+      PlayerEntry pEntry = PlayerEntry.fromJson(entry);
+      players.add(pEntry);
     }
 
     notifyListeners();

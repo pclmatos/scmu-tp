@@ -27,7 +27,6 @@ class Connection {
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
     var message = PlayerMessage("INIT", PlayerEntry(email!, 'IDLE', 'none'));
-    print(jsonEncode(message));
 
     socket.write(jsonEncode(message));
     socket.flush();

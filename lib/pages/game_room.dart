@@ -74,12 +74,9 @@ class GameRoom extends StatelessWidget {
                       },
                       child: const Text("Ready")),
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const GameStarting()));
-                        Connection().closeConnection();
+                      onPressed: () async {
+                        await Connection().closeConnection();
+                        Navigator.pop(context);
                       },
                       child: const Text("Leave"))
                 ],

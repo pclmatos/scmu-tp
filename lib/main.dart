@@ -13,7 +13,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (_) => RoomState({}, 0), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,12 +26,9 @@ class MyApp extends StatelessWidget {
     return StreamProvider<MyUser?>.value(
       value: AuthService().user,
       initialData: MyUser(uid: '', email: ''),
-      child: ChangeNotifierProvider(
-        create: (context) => RoomState({}, 0),
-        child: const MaterialApp(
-          title: "Hot n' Cold",
-          home: Wrapper(),
-        ),
+      child: const MaterialApp(
+        title: "Hot n' Cold",
+        home: Wrapper(),
       ),
     );
   }

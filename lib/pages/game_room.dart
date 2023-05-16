@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state.dart';
+import 'package:hotncold/pages/in_game/game_starting.dart';
+import 'package:hotncold/pages/in_game/hider.dart';
+import 'package:hotncold/pages/in_game/seeker.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
@@ -62,12 +65,20 @@ class GameRoom extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () async {
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Hider()));
                         //await Connection().writeMessage('READY', PlayerEntry(user.email, 'READY'));
                       },
                       child: const Text("Ready")),
                   ElevatedButton(
                       onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const GameStarting()));
                         Connection().closeConnection();
                       },
                       child: const Text("Leave"))

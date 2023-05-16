@@ -13,6 +13,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
     print(user?.email);
+
     if (user == null) {
       return const LoginPage();
     } else {

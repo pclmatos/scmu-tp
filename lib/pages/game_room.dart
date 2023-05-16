@@ -36,7 +36,7 @@ class GameRoom extends StatelessWidget {
                 child: Text(style: TextStyle(color: Colors.white), 'Players'),
               ),
               SizedBox(
-                  height: 500,
+                  height: 300,
                   child: ListView(
                     children: [
                       for (var player in roomState.players)

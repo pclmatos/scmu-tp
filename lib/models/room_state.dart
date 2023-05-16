@@ -1,20 +1,36 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:hotncold/models/player_entry.dart';
 
 class RoomState {
   List<PlayerEntry> players = [];
   int readyCount = 0;
 
-  RoomState(dynamic players, int readyCount);
+  RoomState(this.players, this.readyCount);
 
   factory RoomState.fromJson(dynamic json) {
-    var decodedJson = jsonDecode(json);
+    List<dynamic> playersTmp = json['players'] as List;
+    var ready = json['readyCount'] as int;
 
-    List<dynamic> playersTmp = decodedJson['players'] as List;
-    var ready = decodedJson['readyCount'] as int;
+    List<PlayerEntry> tmp = [];
+    for (var entry in playersTmp) {
+      tmp.add(PlayerEntry.fromJson(entry));
+    }
 
-    return RoomState(playersTmp, ready);
+    return RoomState(tmp, ready);
+  }
+
+  String containsPlayer(String email) {
+    String entry = '';
+    for (var player in players) {
+      if (player.email == email) {
+        entry = player.state;
+      }
+    }
+
+    return entry;
+  }
+
+  @override
+  String toString() {
+    return 'RoomState [players=$players , readyCount=$readyCount]';
   }
 }

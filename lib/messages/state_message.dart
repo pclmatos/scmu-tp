@@ -10,9 +10,10 @@ class StateMessage {
 
   factory StateMessage.fromJson(dynamic json) {
     var decoded = jsonDecode(json);
+    print(decoded);
 
     return StateMessage(
-        decoded['type'] as String, RoomState.fromJson(json['content']));
+        decoded['type'] as String, RoomState.fromJson(decoded['content']));
   }
 
   Map<String, dynamic> toJson() {

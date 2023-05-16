@@ -2,30 +2,29 @@
 
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/player_entry.dart';
-import 'package:hotncold/models/room_state.dart';
-import 'package:hotncold/pages/in_game/game_starting.dart';
+import 'package:hotncold/models/room_state_provider.dart';
+import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/in_game/hider.dart';
-import 'package:hotncold/pages/in_game/seeker.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
 import 'package:provider/provider.dart';
-
-import '../models/user.dart';
 
 class GameRoom extends StatelessWidget {
   const GameRoom({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var roomState = context.watch<RoomState>();
-    final MyUser user = Provider.of<MyUser>(context);
+    return Consumer<RoomStateProvider>(
+        builder: (context, roomStateProvider, child) {
+      final roomState = roomStateProvider.state;
+      final MyUser user = Provider.of<MyUser>(context);
 
-    return Consumer<RoomState>(builder: (context, roomState, child) {
+      print(roomState);
       return Scaffold(
         appBar: header(context, false),
         body: Container(
-          constraints: const BoxConstraints(maxHeight: 700),
+          constraints: const BoxConstraints(maxHeight: 730),
           decoration: background(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -36,7 +35,7 @@ class GameRoom extends StatelessWidget {
                 child: Text(style: TextStyle(color: Colors.white), 'Players'),
               ),
               SizedBox(
-                  height: 300,
+                  height: 350,
                   child: ListView(
                     children: [
                       for (var player in roomState.players)
@@ -66,18 +65,19 @@ class GameRoom extends StatelessWidget {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Hider()));
-                        //await Connection().writeMessage('READY', PlayerEntry(user.email, 'READY'));
-                      },
-                      child: const Text("Ready")),
-                  ElevatedButton(
-                      onPressed: () {
                         Connection().closeConnection();
                       },
-                      child: const Text("Leave"))
+                      child: const Text("Leave")),
+                  if (roomState
+                          .containsPlayer(user.email!)
+                          .compareTo("READY") !=
+                      0)
+                    ElevatedButton(
+                        onPressed: () {
+                          Connection().writeMessage('READY',
+                              PlayerEntry(user.email!, "READY", "none"));
+                        },
+                        child: const Text("Ready"))
                 ],
               )
             ],

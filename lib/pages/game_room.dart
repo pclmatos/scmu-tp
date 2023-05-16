@@ -76,7 +76,6 @@ class GameRoom extends StatelessWidget {
                   ElevatedButton(
                       onPressed: () {
                         Connection().closeConnection();
-                        Navigator.pop(context);
                       },
                       child: const Text("Leave"))
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/room_state.dart';
+import 'package:hotncold/models/room_state_provider.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       initialData: MyUser(uid: '', email: ''),
       child: ChangeNotifierProvider(
-        create: (context) => RoomState({}, 0),
+        create: (context) => RoomStateProvider(),
         child: const MaterialApp(
           title: "Hot n' Cold",
           home: Wrapper(),

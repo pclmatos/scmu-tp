@@ -40,7 +40,6 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(fontSize: 20)),
                   onPressed: () async {
                     await Connection().connect(user.email, context);
-                    sleep(const Duration(seconds: 2));
                     Navigator.push(
                         context,
                         MaterialPageRoute(

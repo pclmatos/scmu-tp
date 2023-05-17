@@ -9,10 +9,11 @@ class Round {
   Round(this.hider, this.seekers, this.latitude, this.longitude);
 
   factory Round.fromJson(dynamic json) {
-    List<dynamic> playersTmp = json['players'] as List;
+    List<dynamic> playersTmp = json['seekers'] as List;
 
     List<PlayerEntry> tmp = [];
     for (var entry in playersTmp) {
+      print(entry);
       tmp.add(PlayerEntry.fromJson(entry));
     }
 

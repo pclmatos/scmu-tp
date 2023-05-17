@@ -11,12 +11,10 @@ class StartMessage {
   factory StartMessage.fromJson(dynamic json) {
     var decoded = jsonDecode(json);
 
-    print(decoded["type"]);
-
-    return StartMessage(decoded['type'] as String, Game.fromJson(json['game']));
+    return StartMessage(decoded['type'], Game.fromJson(decoded['game']));
   }
 
   Map<String, dynamic> toJson() {
-    return {'type': type};
+    return {'type': type, 'game': game};
   }
 }

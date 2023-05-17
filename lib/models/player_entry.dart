@@ -7,8 +7,7 @@ class PlayerEntry {
 
   factory PlayerEntry.fromJson(dynamic json) {
     //var decodedJson = jsonDecode(json);
-    return PlayerEntry(json['email'] as String, json['state'] as String,
-        json['role'] as String);
+    return PlayerEntry(json['email'], json['state'], json['role']);
   }
 
   Map<String, dynamic> toJson() {

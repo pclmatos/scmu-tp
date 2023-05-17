@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hotncold/messages/leave_message.dart';
 import 'package:hotncold/messages/message.dart';
 import 'package:hotncold/messages/player_message.dart';
+import 'package:hotncold/messages/start_message.dart';
 import 'package:hotncold/messages/state_message.dart';
 import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state.dart';
@@ -35,8 +36,6 @@ class Connection {
 
     socket.listen((Uint8List data) {
       var json = String.fromCharCodes(data);
-      StateMessage msg = StateMessage.fromJson(json);
-      gameStateProvider.state = msg.content;
       handleMessage(json);
     }, onError: (error) {
       print("Client: $error");
@@ -85,7 +84,15 @@ class Connection {
   }
 
   void handleMessage(dynamic json) {
-    Message paulo = Message.fromJson(json);
-    print(paulo.type);
+    Message msg = Message.fromJson(json);
+    switch (msg.type) {
+      case "STATE":
+        StateMessage msg = StateMessage.fromJson(json);
+        gameStateProvider.state = msg.content;
+        break;
+      case "START":
+        StartMessage msg = StartMessage.fromJson(json);
+        break;
+    }
   }
 }

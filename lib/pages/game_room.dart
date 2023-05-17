@@ -20,7 +20,6 @@ class GameRoom extends StatelessWidget {
       final roomState = roomStateProvider.state;
       final MyUser user = Provider.of<MyUser>(context);
 
-      print(roomState);
       return Scaffold(
         appBar: header(context, false),
         body: Container(

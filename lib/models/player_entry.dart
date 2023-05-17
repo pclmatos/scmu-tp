@@ -7,7 +7,6 @@ class PlayerEntry {
   PlayerEntry(this.email, this.state);
 
   factory PlayerEntry.fromJson(dynamic json) {
-    print('helloooo           $json');
     return PlayerEntry(json['email'], json['state']);
   }
 

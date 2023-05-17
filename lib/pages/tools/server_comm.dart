@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:hotncold/messages/leave_message.dart';
+import 'package:hotncold/messages/message.dart';
 import 'package:hotncold/messages/player_message.dart';
 import 'package:hotncold/messages/state_message.dart';
 import 'package:hotncold/models/player_entry.dart';
@@ -36,6 +37,7 @@ class Connection {
       var json = String.fromCharCodes(data);
       StateMessage msg = StateMessage.fromJson(json);
       gameStateProvider.state = msg.content;
+      handleMessage(json);
     }, onError: (error) {
       print("Client: $error");
       //print("Attempting to reconnect to $host");
@@ -80,5 +82,10 @@ class Connection {
   void resetRoom(var gameStateProvider) {
     RoomState newState = RoomState([], 0);
     gameStateProvider.state = newState;
+  }
+
+  void handleMessage(dynamic json) {
+    Message paulo = Message.fromJson(json);
+    print(paulo.type);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotncold/models/room_state.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/in_game/seeker.dart';
 import 'package:hotncold/pages/in_game/hider.dart';
@@ -9,10 +10,10 @@ class RoleWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<MyUser?>(context);
-    print(user?.email);
+    final roomState = Provider.of<RoomState?>(context);
+    print(roomState);
 
-    if (user == null) {
+    if (roomState == null) {
       return const Seeker();
     } else {
       return const Hider();

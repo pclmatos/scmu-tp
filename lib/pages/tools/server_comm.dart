@@ -32,7 +32,7 @@ class Connection {
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
 
-    writeMessage("INIT", PlayerEntry(email!, 'IDLE', 'none'));
+    writeMessage("INIT", PlayerEntry(email!, 'IDLE'));
 
     socket.listen((Uint8List data) {
       var json = String.fromCharCodes(data);
@@ -84,14 +84,16 @@ class Connection {
   }
 
   void handleMessage(dynamic json) {
-    Message msg = Message.fromJson(json);
-    switch (msg.type) {
+    print(json);
+    Message tmp = Message.fromJson(json);
+    switch (tmp.type) {
       case "STATE":
         StateMessage msg = StateMessage.fromJson(json);
         gameStateProvider.state = msg.content;
         break;
       case "START":
         StartMessage msg = StartMessage.fromJson(json);
+        print(msg);
         break;
     }
   }

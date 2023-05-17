@@ -13,12 +13,11 @@ class Round {
 
     List<PlayerEntry> tmp = [];
     for (var entry in playersTmp) {
-      print(entry);
       tmp.add(PlayerEntry.fromJson(entry));
     }
 
-    return Round(PlayerEntry.fromJson(json), tmp, json['latitude'] as double,
-        json['longitude'] as double);
+    return Round(PlayerEntry.fromJson(json['hider']), tmp,
+        json['latitude'] as double, json['longitude'] as double);
   }
 
   Map<String, dynamic> toJson() {

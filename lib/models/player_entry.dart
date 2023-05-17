@@ -1,21 +1,22 @@
+import 'dart:convert';
+
 class PlayerEntry {
   String email;
   String state;
-  String role;
 
-  PlayerEntry(this.email, this.state, this.role);
+  PlayerEntry(this.email, this.state);
 
   factory PlayerEntry.fromJson(dynamic json) {
-    //var decodedJson = jsonDecode(json);
-    return PlayerEntry(json['email'], json['state'], json['role']);
+    print('helloooo           $json');
+    return PlayerEntry(json['email'], json['state']);
   }
 
   Map<String, dynamic> toJson() {
-    return {'email': email, 'state': state, 'role': role};
+    return {'email': email, 'state': state};
   }
 
   @override
   String toString() {
-    return 'PlayerEntry [email=$email, state=$state, role=$role]';
+    return 'PlayerEntry [email=$email, state=$state]';
   }
 }

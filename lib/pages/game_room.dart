@@ -5,7 +5,6 @@ import 'package:hotncold/models/game_provider.dart';
 import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state_provider.dart';
 import 'package:hotncold/models/user.dart';
-import 'package:hotncold/pages/in_game/hider.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';

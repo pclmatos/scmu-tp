@@ -4,7 +4,6 @@ import 'package:hotncold/pages/in_game/seeker.dart';
 import 'package:hotncold/pages/in_game/hider.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/header.dart';
-import 'package:provider/provider.dart';
 
 class PlayersFinished extends StatelessWidget {
   const PlayersFinished({super.key});
@@ -20,9 +19,18 @@ class PlayersFinished extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const SizedBox(
+                height: 60,
+              ),
+              print1(
+                  'Congratulations! You found the treasure in x:yz minutes.'),
+              const SizedBox(
                 height: 120,
               ),
-              print('Time Left:')
+              print2('x/y players finished'),
+              const SizedBox(
+                height: 120,
+              ),
+              print2('Waiting for other players to finish...')
             ],
           ),
         ),
@@ -30,10 +38,17 @@ class PlayersFinished extends StatelessWidget {
     );
   }
 
-  Padding print(String text) {
+  Padding print1(String text) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 13, right: 0),
+        child: Text(text,
+            style: const TextStyle(color: Colors.white, fontSize: 30)));
+  }
+
+  Padding print2(String text) {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Text(text,
-            style: const TextStyle(color: Colors.white, fontSize: 30)));
+            style: const TextStyle(color: Colors.white, fontSize: 25)));
   }
 }

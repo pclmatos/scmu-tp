@@ -14,10 +14,22 @@ class TimeLeft extends StatelessWidget {
         child: const Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[],
+            children: <Widget>[
+              const SizedBox(
+                height: 120,
+              ),
+              print('Time Left:')
+            ],
           ),
         ),
       ),
     );
+  }
+
+  Padding print(String text) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Text(text,
+            style: const TextStyle(color: Colors.white, fontSize: 30)));
   }
 }

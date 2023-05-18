@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class PlayerEntry {
   String email;
   String state;

@@ -6,7 +6,6 @@ class MyUser {
 
   @override
   String toString() {
-    // TODO: implement toString
     return "MyUser {uid=$uid, email=$email}";
   }
 }

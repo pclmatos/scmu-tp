@@ -11,7 +11,7 @@ class TimeLeft extends StatelessWidget {
       appBar: header(context, true),
       body: Container(
         decoration: background(),
-        child: const Center(
+        child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

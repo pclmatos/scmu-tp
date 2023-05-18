@@ -32,7 +32,6 @@ class Connection {
 
   Future connect(String? email, BuildContext context) async {
     roomStateProvider = Provider.of<RoomStateProvider>(context, listen: false);
-    //gameProvider = Provider.of<GameProvider>(context, listen: false);
     socket = await Socket.connect(host, port);
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
@@ -95,7 +94,7 @@ class Connection {
   }
 
   void handleMessage(dynamic json, BuildContext context) {
-    print(json);
+    //print(json);
     Message tmp = Message.fromJson(json);
     switch (tmp.type) {
       case "STATE":
@@ -106,6 +105,7 @@ class Connection {
         StartMessage msg = StartMessage.fromJson(json);
         gameProvider = Provider.of<GameProvider>(context, listen: false);
         gameProvider.state = msg.game;
+
         break;
     }
   }

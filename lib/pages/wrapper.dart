@@ -15,10 +15,14 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<MyUser?>(context);
     print(user?.email);
 
-    if (user == null) {
-      return const LoginPage();
-    } else {
-      return HomePage();
-    }
+    return ChangeNotifierProvider(
+        create: (_) => GameProvider(),
+        builder: (context, child) {
+          if (user == null) {
+            return const LoginPage();
+          } else {
+            return HomePage();
+          }
+        });
   }
 }

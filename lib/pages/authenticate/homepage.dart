@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Leaderboard()));
+                              builder: (context) => const PlayersFinished()));
                     }),
               ),
               const SizedBox(

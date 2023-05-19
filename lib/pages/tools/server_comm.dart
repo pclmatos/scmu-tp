@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hotncold/messages/leave_message.dart';
 import 'package:hotncold/messages/message.dart';
 import 'package:hotncold/messages/player_message.dart';
@@ -14,7 +13,6 @@ import 'package:hotncold/models/game_provider.dart';
 import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state.dart';
 import 'package:hotncold/models/room_state_provider.dart';
-import 'package:hotncold/pages/how_to_play.dart';
 import 'package:hotncold/pages/in_game/role_wrapper.dart';
 import 'package:provider/provider.dart';
 

@@ -10,8 +10,7 @@ class RoleWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gameState = context.watch<GameProvider>();
-
+    final gameState = Provider.of<GameProvider>(context);
     final user = Provider.of<MyUser?>(context);
 
     if (gameState.state.rounds[gameState.state.currentRound].hider.email

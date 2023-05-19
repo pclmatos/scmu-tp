@@ -8,7 +8,7 @@ class Seeker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, true),
+      appBar: header(context, false),
       body: Container(
         decoration: background(),
         child: Center(

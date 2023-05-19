@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotncold/models/game_provider.dart';
 import 'package:hotncold/models/room_state_provider.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/wrapper.dart';
@@ -13,10 +14,16 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ChangeNotifierProvider(
-    create: (_) => RoomStateProvider(),
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<RoomStateProvider>(
+            create: (_) => RoomStateProvider()),
+        ChangeNotifierProvider<GameProvider>(create: (_) => GameProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

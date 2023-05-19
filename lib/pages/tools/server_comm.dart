@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hotncold/messages/leave_message.dart';
 import 'package:hotncold/messages/message.dart';
@@ -105,7 +106,8 @@ class Connection {
         StartMessage msg = StartMessage.fromJson(json);
         gameProvider = Provider.of<GameProvider>(context, listen: false);
         gameProvider.state = msg.game;
-
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const RoleWrapper()));
         break;
     }
   }

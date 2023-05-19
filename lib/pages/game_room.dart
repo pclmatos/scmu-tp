@@ -5,7 +5,6 @@ import 'package:hotncold/models/game_provider.dart';
 import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state_provider.dart';
 import 'package:hotncold/models/user.dart';
-import 'package:hotncold/pages/in_game/role_wrapper.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
@@ -20,8 +19,6 @@ class GameRoom extends StatelessWidget {
         builder: (context, roomStateProvider, child) {
       final roomState = roomStateProvider.state;
       final MyUser user = Provider.of<MyUser>(context);
-      late GameProvider gameState =
-          Provider.of<GameProvider>(context, listen: false);
 
       return ChangeNotifierProvider(
         create: (_) => GameProvider(),
@@ -85,14 +82,6 @@ class GameRoom extends StatelessWidget {
                             onPressed: () {
                               Connection().writeMessage(
                                   'READY', PlayerEntry(user.email!, "READY"));
-                              //print(gameState);
-                              if (gameState.state.rounds.isNotEmpty) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RoleWrapper()));
-                              }
                             },
                             child: const Text("Ready")),
                       ),

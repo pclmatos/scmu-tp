@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/game_provider.dart';
 import 'package:hotncold/models/user.dart';
@@ -25,7 +23,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final MyUser user = Provider.of<MyUser>(context);
 
-    return Provider<GameProvider>(
+    return ChangeNotifierProvider(
       create: (_) => GameProvider(),
       child: Scaffold(
         appBar: header(context, false),

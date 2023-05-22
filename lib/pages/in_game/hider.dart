@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:hotncold/pages/in_game/camera.dart';
@@ -46,14 +48,20 @@ class _HiderState extends State<Hider> {
               const SizedBox(
                 height: 50,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Camera()));
-                  },
-                  child: const Text("Go to camera")),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FloatingActionButton(
+                      backgroundColor: Colors.black,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Camera()));
+                      },
+                      child: const Icon(Icons.camera_alt)),
+                ],
+              ),
             ],
           ),
         ),

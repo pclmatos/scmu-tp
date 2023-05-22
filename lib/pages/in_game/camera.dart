@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 class Camera extends StatefulWidget {
   const Camera({Key? key}) : super(key: key);
@@ -42,21 +39,6 @@ class _CameraState extends State<Camera> {
     });
   }
 
-  void _captureImage() async {
-    if (cameraController.value.isInitialized) {
-      final Directory directory = await getTemporaryDirectory();
-      final String imagePath = '${directory.path}/image.jpg';
-
-      XFile picture = await cameraController.takePicture();
-      //picture.saveTo
-      // Perform any desired operations with the captured image
-      // For example, display it in an Image widget
-      setState(() {
-        //_capturedImage = File(imagePath);
-      });
-    }
-  }
-
   @override
   void dispose() {
     cameraController.dispose();
@@ -86,15 +68,6 @@ class _CameraState extends State<Camera> {
                 picture.saveTo("/storage/emulated/0/Download/test.jpg");
               },
               child: button(Icons.camera_alt_outlined, Alignment.bottomCenter),
-            ),
-            const Align(
-              alignment: AlignmentDirectional.topCenter,
-              child: Text(
-                "My Camera",
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
             ),
           ],
         ),

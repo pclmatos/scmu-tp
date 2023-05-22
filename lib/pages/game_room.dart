@@ -64,7 +64,7 @@ class GameRoom extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 70,
+                      width: MediaQuery.of(context).size.width / 4,
                       child: ElevatedButton(
                           onPressed: () {
                             Connection().closeConnection();
@@ -77,7 +77,7 @@ class GameRoom extends StatelessWidget {
                             .compareTo("READY") !=
                         0)
                       SizedBox(
-                        width: 70,
+                        width: MediaQuery.of(context).size.width / 4,
                         child: ElevatedButton(
                             onPressed: () {
                               Connection().writeMessage(

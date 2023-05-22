@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:hotncold/services/location.dart';
 
 class Camera extends StatefulWidget {
   const Camera({Key? key}) : super(key: key);
@@ -64,8 +65,10 @@ class _CameraState extends State<Camera> {
             ),
             GestureDetector(
               onTap: () async {
+                LocationService().getCurrentLocation();
                 XFile picture = await cameraController.takePicture();
-                picture.saveTo("/storage/emulated/0/Download/test.jpg");
+                // ignore: use_build_context_synchronously
+                Navigator.pop(context);
               },
               child: button(Icons.camera_alt_outlined, Alignment.bottomCenter),
             ),

@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hotncold/models/game_provider.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/game_room.dart';
-import 'package:hotncold/pages/in_game/leaderboard.dart';
 import 'package:hotncold/pages/in_game/players_finished.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
-import 'package:hotncold/pages/how_to_play.dart';
 import 'package:hotncold/pages/wrapper.dart';
 import 'package:hotncold/services/auth.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
@@ -34,11 +32,13 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 75,
-                  width: 250,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   child: ElevatedButton(
-                    child: const Text("Join Game Room",
-                        style: TextStyle(fontSize: 20)),
+                    child: Text("Join Game Room",
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width * 0.06)),
                     onPressed: () async {
                       await Connection().connect(user.email, context);
                       Navigator.push(
@@ -48,16 +48,17 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 SizedBox(
-                  height: 75,
-                  width: 250,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   child: ElevatedButton(
-                      child: const Text(
+                      child: Text(
                         "How To Play",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.06),
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -66,16 +67,17 @@ class HomePage extends StatelessWidget {
                                 builder: (context) => const PlayersFinished()));
                       }),
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 SizedBox(
-                  height: 75,
-                  width: 250,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  width: MediaQuery.of(context).size.width * 0.7,
                   child: ElevatedButton(
-                      child: const Text(
+                      child: Text(
                         "Logout",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.06),
                       ),
                       onPressed: () async {
                         auth.signOut();

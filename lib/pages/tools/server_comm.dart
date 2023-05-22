@@ -33,6 +33,8 @@ class Connection {
 
   Future connect(String? email, BuildContext context) async {
     roomStateProvider = Provider.of<RoomStateProvider>(context, listen: false);
+    gameProvider = Provider.of<GameProvider>(context, listen: false);
+
     socket = await Socket.connect(host, port);
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
@@ -121,4 +123,6 @@ class Connection {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Wrapper()));
   }
+
+  void resetGame(BuildContext context) {}
 }

@@ -37,7 +37,7 @@ class _RegisterState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                width: 300,
+                width: MediaQuery.of(context).size.width * 0.7,
                 child: TextFormField(
                   controller: emailController,
                   style: const TextStyle(color: Colors.white),
@@ -51,11 +51,11 @@ class _RegisterState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
               SizedBox(
-                width: 300,
+                width: MediaQuery.of(context).size.width * 0.7,
                 child: TextFormField(
                   controller: pwdController,
                   obscureText: true,
@@ -77,11 +77,11 @@ class _RegisterState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
               SizedBox(
-                width: 300,
+                width: MediaQuery.of(context).size.width * 0.7,
                 child: TextFormField(
                   controller: confirmController,
                   obscureText: true,
@@ -103,51 +103,58 @@ class _RegisterState extends State<RegisterPage> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      ElevatedButton(
-                        child: const Text("Submit"),
-                        onPressed: () async {
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            email = emailController.text;
-                            pwd = pwdController.text;
-                            confirm = confirmController.text;
-                          });
-                          if (validateCredentials(email, pwd, confirm)) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  registerMessage(context, email, pwd, confirm),
-                              behavior: SnackBarBehavior.floating,
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
-                            ));
-                          } else {
-                            dynamic result = await auth
-                                .registerWithEmailAnPassword(email, pwd);
-                            if (result == null) {
-                              setState(() {
-                                error = 'Please provide a valid email';
-                              });
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: ElevatedButton(
+                          child: const Text("Submit"),
+                          onPressed: () async {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              email = emailController.text;
+                              pwd = pwdController.text;
+                              confirm = confirmController.text;
+                            });
+                            if (validateCredentials(email, pwd, confirm)) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                content: Text(error),
+                                content: registerMessage(
+                                    context, email, pwd, confirm),
                                 behavior: SnackBarBehavior.floating,
                                 backgroundColor: Colors.transparent,
                                 elevation: 0,
                               ));
                             } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Wrapper(),
-                                  ));
+                              dynamic result = await auth
+                                  .registerWithEmailAnPassword(email, pwd);
+                              if (result == null) {
+                                setState(() {
+                                  error = 'Please provide a valid email';
+                                });
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(error),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                ));
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Wrapper(),
+                                    ));
+                              }
                             }
-                          }
-                        },
+                          },
+                        ),
                       ),
                     ],
                   ),

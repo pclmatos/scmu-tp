@@ -25,18 +25,23 @@ class GameRoom extends StatelessWidget {
         child: Scaffold(
           appBar: header(context, false),
           body: Container(
-            constraints: const BoxConstraints(maxHeight: 730),
+            constraints:
+                BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
             decoration: background(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Text(style: TextStyle(color: Colors.white), 'Players'),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width * 0.1),
+                      'Players'),
                 ),
                 SizedBox(
-                    height: 350,
+                    height: MediaQuery.of(context).size.height * 0.6,
                     child: ListView(
                       children: [
                         for (var player in roomState.players)
@@ -44,7 +49,11 @@ class GameRoom extends StatelessWidget {
                             iconColor: Colors.white,
                             leading: const Icon(Icons.person),
                             title: Text(
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.05),
                                 '${player.email}       ${player.state}'),
                           )
                       ],

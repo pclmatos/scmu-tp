@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                width: 300,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: TextFormField(
                   controller: emailController,
                   style: const TextStyle(color: Colors.white),
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 10,
               ),
               SizedBox(
-                width: 300,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: TextFormField(
                   controller: pwdController,
                   obscureText: true,
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                   Column(
                     children: <Widget>[
                       SizedBox(
-                        width: 90,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         child: ElevatedButton(
                             child: const Text("Login"),
                             onPressed: () async {
@@ -118,12 +118,12 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    width: 10,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.05,
                   ),
                   Column(children: [
                     SizedBox(
-                      width: 90,
+                      width: MediaQuery.of(context).size.width * 0.25,
                       child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(

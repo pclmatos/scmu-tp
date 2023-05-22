@@ -14,6 +14,7 @@ import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state.dart';
 import 'package:hotncold/models/room_state_provider.dart';
 import 'package:hotncold/pages/in_game/role_wrapper.dart';
+import 'package:hotncold/pages/wrapper.dart';
 import 'package:provider/provider.dart';
 
 class Connection {
@@ -45,16 +46,12 @@ class Connection {
       print("Client: $error");
       //print("Attempting to reconnect to $host");
       socket.destroy();
-      resetProvider(roomStateProvider);
-      //resetProvider(gameProvider);
-      Navigator.pop(context);
+      resetGameRoom(context);
       //socket = await Socket.connect(host, port);
     }, onDone: () {
       print("Client: Server left.");
       socket.destroy();
-      resetProvider(roomStateProvider);
-      //resetProvider(gameProvider);
-      Navigator.pop(context);
+      resetGameRoom(context);
     });
   }
 
@@ -115,5 +112,13 @@ class Connection {
             MaterialPageRoute(builder: (context) => const RoleWrapper()));
         break;
     }
+  }
+
+  void resetGameRoom(BuildContext context) {
+    resetProvider(roomStateProvider);
+    resetProvider(gameProvider);
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Wrapper()));
   }
 }

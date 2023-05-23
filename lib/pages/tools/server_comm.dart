@@ -47,8 +47,8 @@ class Connection {
     }, onError: (error) {
       print("Client: $error");
       //print("Attempting to reconnect to $host");
-      socket.destroy();
-      resetGameRoom(context);
+      //socket.destroy();
+      //resetGameRoom(context);
       //socket = await Socket.connect(host, port);
     }, onDone: () {
       print("Client: Server left.");

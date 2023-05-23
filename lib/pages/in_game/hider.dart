@@ -3,6 +3,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:hotncold/pages/in_game/camera.dart';
+import 'package:hotncold/pages/tools/esp_comm.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 
@@ -28,6 +29,9 @@ class _HiderState extends State<Hider> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController codeController = TextEditingController();
+    String code = '';
+
     return Scaffold(
       appBar: header(context, false),
       body: Container(
@@ -36,21 +40,52 @@ class _HiderState extends State<Hider> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const SizedBox(
-                height: 120,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.2,
               ),
               print('You are the Hider.'),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
               print(
                   'Please hide the treasure and take a photo of its location.'),
-              const SizedBox(
-                height: 50,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.06,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.04,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    child: TextFormField(
+                      controller: codeController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        hintText: "Code",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.075,
+                    child: ElevatedButton(
+                      child: const Text('Send Code'),
+                      onPressed: () {
+                        print(code);
+                        EspComm().connectToDevice(context);
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.04,
+                  ),
                   FloatingActionButton(
                       backgroundColor: Colors.black,
                       onPressed: () {

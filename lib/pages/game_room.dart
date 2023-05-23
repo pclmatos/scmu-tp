@@ -53,7 +53,7 @@ class GameRoom extends StatelessWidget {
                                     color: Colors.white,
                                     fontSize:
                                         MediaQuery.of(context).size.width *
-                                            0.05),
+                                            0.04),
                                 '${player.email}       ${player.state}'),
                           )
                       ],

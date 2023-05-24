@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hotncold/models/room_state_provider.dart';
+import 'package:hotncold/providers/room_state_provider.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:provider/provider.dart';

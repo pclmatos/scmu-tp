@@ -1,32 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:hotncold/pages/in_game/location_test.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
+import 'package:hotncold/providers/game_provider.dart';
+import 'package:provider/provider.dart';
 
 class Seeker extends StatelessWidget {
   const Seeker({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: header(context, false),
-      body: Container(
-        decoration: background(),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(
-                height: 120,
+    return Consumer<GameProvider>(
+      builder: (context, gameProvider, child) {
+        final gameState = gameProvider.state;
+
+        if (gameState.rounds[gameState.currentRound].latitude == 0 &&
+            gameState.rounds[gameState.currentRound].longitude == 0) {
+          return const LocationApp();
+        } else {
+          return Scaffold(
+            appBar: header(context, false),
+            body: Container(
+              decoration: background(),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 120,
+                    ),
+                    print('You are the Seeker.'),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    print('Waiting for the Hider to hide the treasure.'),
+                  ],
+                ),
               ),
-              print('You are the Seeker.'),
-              const SizedBox(
-                height: 20,
-              ),
-              print('Waiting for the Hider to hide the treasure.'),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EspComm {
   static final EspComm _instance = EspComm._internal();
@@ -15,6 +16,20 @@ class EspComm {
   }
 
   EspComm._internal();
+
+  void initializeBluetooth() async {
+    BluetoothState state = await FlutterBluetoothSerial.instance.state;
+    requestBluetoothPermissions();
+
+    if (state.isEnabled) {
+      return;
+      // Bluetooth is available, continue with your logic
+    } else {
+      // Bluetooth is not enabled, you can request the user to enable it
+      FlutterBluetoothSerial.instance.requestEnable();
+      return;
+    }
+  }
 
   // Rest of the class implementation...
 
@@ -33,6 +48,19 @@ class EspComm {
       String message = String.fromCharCodes(data);
       print('Received: $message');
     });
+  }
+
+  void requestBluetoothPermissions() async {
+    PermissionStatus status = await Permission.bluetooth.request();
+    if (status.isDenied) {
+      Permission.bluetooth.request();
+    } else if (status.isPermanentlyDenied) {
+      // Permissions are permanently denied. Open app settings.
+      openAppSettings();
+    } else if (status.isGranted) {
+      // Permissions are granted. Proceed with Bluetooth operations.
+      // Your Bluetooth code here.
+    }
   }
 
   void sendMessage(String message) {
@@ -71,10 +99,11 @@ class _BluetoothDeviceListState extends State<BluetoothDeviceList> {
   }
 
   void _getPairedDevices() async {
-    List<BluetoothDevice> pairedDevices =
-        await FlutterBluetoothSerial.instance.getBondedDevices();
-    setState(() {
-      devices = pairedDevices;
+    EspComm().initializeBluetooth();
+    devices = await FlutterBluetoothSerial.instance.getBondedDevices();
+
+    devices.forEach((device) {
+      print('Device: ${device.name}, address: ${device.address}');
     });
   }
 
@@ -88,6 +117,7 @@ class _BluetoothDeviceListState extends State<BluetoothDeviceList> {
         itemCount: devices.length,
         itemBuilder: (context, index) {
           BluetoothDevice device = devices[index];
+          print(devices[index].name);
           return ListTile(
             title: Text(device.name!),
             subtitle: Text(device.address),

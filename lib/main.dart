@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hotncold/models/game_provider.dart';
-import 'package:hotncold/models/room_state_provider.dart';
+import 'package:hotncold/providers/game_provider.dart';
+import 'package:hotncold/providers/location_provider.dart';
+import 'package:hotncold/providers/room_state_provider.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,6 +21,8 @@ void main() async {
         ChangeNotifierProvider<RoomStateProvider>(
             create: (_) => RoomStateProvider()),
         ChangeNotifierProvider<GameProvider>(create: (_) => GameProvider()),
+        ChangeNotifierProvider<LocationProvider>(
+            create: (_) => LocationProvider())
       ],
       child: const MyApp(),
     ),

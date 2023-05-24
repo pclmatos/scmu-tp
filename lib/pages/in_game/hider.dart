@@ -25,6 +25,7 @@ class _HiderState extends State<Hider> {
   void initState() {
     super.initState();
     getCameras();
+    EspComm().initializeBluetooth();
   }
 
   @override

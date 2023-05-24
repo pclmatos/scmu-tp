@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hotncold/models/game_provider.dart';
+import 'package:hotncold/providers/game_provider.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/in_game/seeker.dart';
 import 'package:hotncold/pages/in_game/hider.dart';
+import 'package:hotncold/services/location.dart';
 import 'package:provider/provider.dart';
 
 class RoleWrapper extends StatelessWidget {
@@ -12,6 +13,8 @@ class RoleWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameState = Provider.of<GameProvider>(context);
     final user = Provider.of<MyUser?>(context);
+
+    LocationService().initService();
 
     if (gameState.state.rounds[gameState.state.currentRound].hider.email
             .compareTo(user!.email!) !=

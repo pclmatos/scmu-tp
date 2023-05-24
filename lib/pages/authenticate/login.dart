@@ -96,15 +96,23 @@ class _LoginPageState extends State<LoginPage> {
                                   elevation: 0,
                                 ));
                               } else {
+                                showDialog(
+                                    context: context,
+                                    builder: ((context) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    }));
                                 dynamic result = await auth
                                     .signInEmailAndPassword(email, pwd);
                                 if (result != null) {
+                                  Navigator.pop(context);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const Wrapper()));
                                 } else {
+                                  Navigator.pop(context);
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     content: Text(error),

@@ -28,7 +28,7 @@ class _CameraState extends State<Camera> {
 
     cameraController = CameraController(
       cameras[direction],
-      ResolutionPreset.ultraHigh,
+      ResolutionPreset.high,
       enableAudio: false,
     );
 
@@ -74,6 +74,7 @@ class _CameraState extends State<Camera> {
                       return const Center(child: CircularProgressIndicator());
                     }));
                 XFile photo = await cameraController.takePicture();
+
                 Navigator.pop(context);
                 Navigator.pop(context, photo);
               },

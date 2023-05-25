@@ -2,21 +2,19 @@ import 'dart:convert';
 
 import 'package:hotncold/models/photo_entry.dart';
 
-class HiderMessage {
+class PhotoMessage {
   String type;
-  String code;
   PhotoEntry content;
 
-  HiderMessage(this.type, this.code, this.content);
+  PhotoMessage(this.type, this.content);
 
-  factory HiderMessage.fromJson(dynamic json) {
+  factory PhotoMessage.fromJson(dynamic json) {
     var decoded = jsonDecode(json);
 
-    return HiderMessage(
-        decoded['type'], decoded['code'], PhotoEntry.fromJson(decoded));
+    return PhotoMessage(decoded['type'], PhotoEntry.fromJson(decoded));
   }
 
   Map<String, dynamic> toJson() {
-    return {'type': type, 'code': code, 'content': content};
+    return {'type': type, 'content': content};
   }
 }

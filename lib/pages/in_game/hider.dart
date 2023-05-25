@@ -1,8 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
-import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:image/image.dart' as img;
+
+import 'package:hotncold/models/code_entry.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
 
 import 'package:camera/camera.dart';
@@ -24,6 +27,9 @@ class Hider extends StatefulWidget {
 class _HiderState extends State<Hider> {
   late List<CameraDescription> cameras;
   TextEditingController codeController = TextEditingController();
+  late PhotoEntry photoEntry;
+  late CodeEntry codeEntry;
+  late Position position;
 
   String code = '';
 
@@ -73,22 +79,17 @@ class _HiderState extends State<Hider> {
                           MaterialPageRoute(
                               builder: (context) => const Camera()));
 
-                      Position position =
-                          await LocationService().getCurrentLocation();
-
-                      final bytes = await photo.readAsBytes();
-
-                      PhotoEntry entry = PhotoEntry(
-                          position.latitude, position.longitude, bytes);
-
-                      print(base64Encode(bytes));
-                      print(entry.toJson());
-                      // ignore: use_build_context_synchronously
-                      Navigator.push(
+                      await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: ((context) =>
                                   DisplayPictureScreen(image: photo))));
+                      position = await LocationService().getCurrentLocation();
+
+                      final resizedImage = await resizeImage(photo, 288, 352);
+                      print(resizedImage.lengthInBytes);
+
+                      photoEntry = PhotoEntry(resizedImage);
                     },
                     child: const Icon(Icons.camera_alt)),
               ),
@@ -128,6 +129,15 @@ class _HiderState extends State<Hider> {
                           setState(() {
                             code = codeController.text;
                           });
+
+                          codeEntry = CodeEntry(
+                              code, position.latitude, position.longitude);
+                          Connection().writeMessage('CODE', codeEntry);
+                          sleep(const Duration(seconds: 2));
+                          Connection().writeMessage(
+                            'PHOTO',
+                            photoEntry,
+                          );
                         },
                       ),
                     ),
@@ -145,6 +155,24 @@ class _HiderState extends State<Hider> {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Text(text, style: const TextStyle(color: Colors.white)));
+  }
+
+  Future<Uint8List> resizeImage(XFile imageFile, int width, int height) async {
+    // Read the image file
+    Uint8List imageBytes = await imageFile.readAsBytes();
+
+    // Decode the image
+    img.Image? image = img.decodeImage(imageBytes);
+
+    // Resize the image
+    img.Image resizedImage =
+        img.copyResize(image!, width: width, height: height);
+
+    // Encode the resized image to bytes
+    Uint8List resizedBytes =
+        img.encodeJpg(resizedImage); // or encodePng if you prefer PNG format
+
+    return resizedBytes;
   }
 }
 

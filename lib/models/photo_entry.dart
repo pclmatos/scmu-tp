@@ -2,21 +2,19 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 class PhotoEntry {
-  double lat;
-  double lon;
   Uint8List photoBytes;
 
-  PhotoEntry(this.lat, this.lon, this.photoBytes);
+  PhotoEntry(this.photoBytes);
 
   factory PhotoEntry.fromJson(dynamic json) {
-    var decodedPhotoBytes = base64Decode(json['photobytes']);
+    var decodedPhotoBytes = base64Decode(json['photobytes'] as String);
 
-    return PhotoEntry(json['lat'], json['lon'], decodedPhotoBytes);
+    return PhotoEntry(decodedPhotoBytes);
   }
 
   Map<String, dynamic> toJson() {
     var photoBase64 = base64Encode(photoBytes);
 
-    return {'lat': lat, 'lon': lon, 'photoBytes': photoBase64};
+    return {'photoBytes': photoBase64};
   }
 }

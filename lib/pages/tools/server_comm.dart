@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:hotncold/messages/leave_message.dart';
 import 'package:hotncold/messages/message.dart';
+import 'package:hotncold/messages/photo_message.dart';
 import 'package:hotncold/messages/player_message.dart';
 import 'package:hotncold/messages/start_message.dart';
 import 'package:hotncold/messages/state_message.dart';
@@ -39,7 +40,7 @@ class Connection {
     print(
         "Connecting to: ${socket.remoteAddress.address}:${socket.remotePort}");
 
-    writeMessage("INIT", PlayerEntry(email!, 'IDLE'));
+    writeMessage("INIT", PlayerEntry(email!, 'IDLE'), '');
 
     socket.listen((Uint8List data) {
       var json = String.fromCharCodes(data);
@@ -59,11 +60,11 @@ class Connection {
 
   closeConnection() {
     print("Closing");
-    writeMessage('LEAVE', '');
+    writeMessage('LEAVE', '', '');
     socket.destroy();
   }
 
-  writeMessage(String type, dynamic content) {
+  writeMessage(String type, dynamic content, dynamic optional) {
     var message;
     switch (type) {
       case 'INIT':
@@ -71,6 +72,9 @@ class Connection {
         break;
       case 'READY':
         message = PlayerMessage(type, content);
+        break;
+      case 'HIDER':
+        message = HiderMessage(type, optional, content);
         break;
       case 'LEAVE':
         message = LeaveMessage(type);

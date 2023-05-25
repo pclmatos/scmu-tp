@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotncold/pages/in_game/location_test.dart';
+import 'package:hotncold/pages/in_game/time_left.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/providers/game_provider.dart';
@@ -14,9 +15,9 @@ class Seeker extends StatelessWidget {
       builder: (context, gameProvider, child) {
         final gameState = gameProvider.state;
 
-        if (gameState.rounds[gameState.currentRound].latitude == 0 &&
-            gameState.rounds[gameState.currentRound].longitude == 0) {
-          return const LocationApp();
+        if (gameState.rounds[gameState.currentRound].latitude != 0 &&
+            gameState.rounds[gameState.currentRound].longitude != 0) {
+          return const TimeLeft();
         } else {
           return Scaffold(
             appBar: header(context, false),

@@ -9,7 +9,6 @@ import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/wrapper.dart';
 import 'package:hotncold/services/auth.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
-import 'package:hotncold/services/location.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {

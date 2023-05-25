@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:hotncold/pages/tools/header.dart';
 
 class Camera extends StatefulWidget {
   const Camera({Key? key}) : super(key: key);
@@ -26,11 +28,9 @@ class _CameraState extends State<Camera> {
 
     cameraController = CameraController(
       cameras[direction],
-      ResolutionPreset.high,
+      ResolutionPreset.ultraHigh,
       enableAudio: false,
     );
-
-    // ignore: use_build_context_synchronously
 
     await cameraController.initialize().then((value) {
       if (!mounted) {
@@ -52,6 +52,7 @@ class _CameraState extends State<Camera> {
   Widget build(BuildContext context) {
     if (cameraController.value.isInitialized) {
       return Scaffold(
+        appBar: header(context, true),
         body: Stack(
           children: [
             CameraPreview(cameraController),
@@ -67,10 +68,14 @@ class _CameraState extends State<Camera> {
             ),
             GestureDetector(
               onTap: () async {
-                XFile picture = await cameraController.takePicture();
-
-                // ignore: use_build_context_synchronously
+                showDialog(
+                    context: context,
+                    builder: ((context) {
+                      return const Center(child: CircularProgressIndicator());
+                    }));
+                XFile photo = await cameraController.takePicture();
                 Navigator.pop(context);
+                Navigator.pop(context, photo);
               },
               child: button(Icons.camera_alt_outlined, Alignment.bottomCenter),
             ),

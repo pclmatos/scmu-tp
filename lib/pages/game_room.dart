@@ -88,7 +88,7 @@ class GameRoom extends StatelessWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             Connection().writeMessage(
-                                'READY', PlayerEntry(user.email!, "READY"));
+                                'READY', PlayerEntry(user.email!, "READY"), '');
                           },
                           child: const Text("Ready")),
                     ),

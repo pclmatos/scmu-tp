@@ -3,8 +3,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:hotncold/pages/in_game/location_test.dart';
-import 'package:hotncold/pages/in_game/players_finished.dart';
+import 'package:hotncold/pages/in_game/hider_waiting.dart';
 import 'package:hotncold/providers/game_provider.dart';
 import 'package:image/image.dart' as img;
 
@@ -48,13 +47,15 @@ class _HiderState extends State<Hider> {
 
   @override
   Widget build(BuildContext context) {
+    LocationService().initService();
+
     return Consumer<GameProvider>(
       builder: (context, gameProvider, child) {
         final gameState = gameProvider.state;
 
         if (gameState.rounds[gameState.currentRound].latitude != 0 &&
             gameState.rounds[gameState.currentRound].longitude != 0) {
-          return const LocationApp();
+          return const HiderWaiting();
         } else {
           return Scaffold(
             appBar: header(context, false),

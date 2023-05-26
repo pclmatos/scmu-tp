@@ -11,8 +11,6 @@ class Leaderboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RoomStateProvider>(
         builder: (context, roomStateProvider, child) {
-      final roomState = roomStateProvider.state;
-
       Padding print(String text) {
         return Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),

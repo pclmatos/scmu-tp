@@ -11,8 +11,8 @@ import 'package:hotncold/messages/photo_message.dart';
 import 'package:hotncold/messages/player_message.dart';
 import 'package:hotncold/messages/start_message.dart';
 import 'package:hotncold/messages/state_message.dart';
-import 'package:hotncold/messages/wrong_code_message.dart';
 import 'package:hotncold/models/game.dart';
+import 'package:hotncold/pages/in_game/leaderboard.dart';
 import 'package:hotncold/providers/game_provider.dart';
 import 'package:hotncold/models/player_entry.dart';
 import 'package:hotncold/models/room_state.dart';
@@ -106,6 +106,7 @@ class Connection {
 
   void handleMessage(dynamic json, BuildContext context) {
     Message tmp = Message.fromJson(json);
+    print(json);
     switch (tmp.type) {
       case "STATE":
         StateMessage msg = StateMessage.fromJson(json);
@@ -119,7 +120,6 @@ class Connection {
             MaterialPageRoute(builder: (context) => const RoleWrapper()));
         break;
       case 'WRONG':
-        print(json);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -138,6 +138,12 @@ class Connection {
             );
           },
         );
+        break;
+      case 'FINISH':
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const Leaderboard()));
+        break;
+      default:
         break;
     }
   }

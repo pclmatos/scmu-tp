@@ -134,13 +134,15 @@ class TimeLeftState extends State<TimeLeft> {
     if (countdownTimer!.isActive) {
       return Consumer<LocationProvider>(
         builder: (context, locationProvider, child) {
+          final currentPosition = locationProvider.currentPosition;
+          print(currentPosition);
           return Scaffold(
             appBar: header(context, false),
             body: Container(
               decoration: BoxDecoration(
                   color: currBackgroundColor(
-                      locationProvider.currentPosition.latitude,
-                      locationProvider.currentPosition.longitude,
+                      currentPosition.latitude,
+                      currentPosition.longitude,
                       gameState.rounds[gameState.currentRound].latitude,
                       gameState.rounds[gameState.currentRound].longitude)),
               child: Center(

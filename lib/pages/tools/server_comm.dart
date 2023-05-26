@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:hotncold/messages/confirmation_message.dart';
 import 'package:hotncold/messages/leave_message.dart';
 import 'package:hotncold/messages/message.dart';
 import 'package:hotncold/messages/code_message.dart';
@@ -10,6 +11,7 @@ import 'package:hotncold/messages/photo_message.dart';
 import 'package:hotncold/messages/player_message.dart';
 import 'package:hotncold/messages/start_message.dart';
 import 'package:hotncold/messages/state_message.dart';
+import 'package:hotncold/messages/wrong_code_message.dart';
 import 'package:hotncold/models/game.dart';
 import 'package:hotncold/providers/game_provider.dart';
 import 'package:hotncold/models/player_entry.dart';
@@ -80,6 +82,9 @@ class Connection {
       case 'CODE':
         message = CodeMessage(type, content);
         break;
+      case 'CONFIRMATION':
+        message = ConfirmationMessage(type, content);
+        break;
       case 'LEAVE':
         message = LeaveMessage(type);
         break;
@@ -87,7 +92,6 @@ class Connection {
         break;
     }
     var toSend = jsonEncode(message);
-    print(toSend);
     socket.write(toSend);
   }
 
@@ -101,18 +105,11 @@ class Connection {
   }
 
   void handleMessage(dynamic json, BuildContext context) {
-    //print(json);
     Message tmp = Message.fromJson(json);
     switch (tmp.type) {
       case "STATE":
         StateMessage msg = StateMessage.fromJson(json);
         roomStateProvider.state = msg.content;
-        //if (roomStateProvider.state.players.length ==
-        //        roomStateProvider.state.readyCount &&
-        //    roomStateProvider.state.players.length > 1) {
-        //  Navigator.push(context,
-        //      MaterialPageRoute(builder: (context) => const HowToPlay()));
-        //}
         break;
       case 'START':
         StartMessage msg = StartMessage.fromJson(json);
@@ -120,6 +117,27 @@ class Connection {
         gameProvider.state = msg.game;
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const RoleWrapper()));
+        break;
+      case 'WRONG':
+        print(json);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Wrong Code'),
+              content: const Text(
+                  'The confimation code provided is wrong. Please try again.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
         break;
     }
   }

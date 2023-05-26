@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:hotncold/pages/tools/background.dart';
+import 'package:hotncold/models/confirmation_entry.dart';
+import 'package:hotncold/pages/in_game/players_finished.dart';
 import 'package:hotncold/pages/tools/header.dart';
+import 'package:hotncold/pages/tools/server_comm.dart';
 import 'package:hotncold/providers/game_provider.dart';
 import 'package:hotncold/providers/location_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +18,10 @@ class TimeLeft extends StatefulWidget {
 }
 
 class TimeLeftState extends State<TimeLeft> {
+  late num calculatedDistance;
+  late String confirmationCode;
+  TextEditingController codeController = TextEditingController();
+
   final List<Color> colors = const [
     Color.fromARGB(255, 255, 0, 0),
     Color.fromARGB(255, 255, 60, 60),
@@ -62,7 +68,7 @@ class TimeLeftState extends State<TimeLeft> {
   }
 
   Color currBackgroundColor(lat1, lon1, lat2, lon2) {
-    final calculatedDistance = calculateDistance(lat1, lon1, lat2, lon2);
+    calculatedDistance = calculateDistance(lat1, lon1, lat2, lon2);
 
     if (calculatedDistance >= 0 && calculatedDistance < 10) {
       return colors[0];
@@ -79,48 +85,109 @@ class TimeLeftState extends State<TimeLeft> {
     }
   }
 
+  Row inputConfirmationCode(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: TextFormField(
+              controller: codeController,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                  hintText: "Code",
+                  hintStyle: TextStyle(color: Colors.white),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)))),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.04,
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          child: ElevatedButton(
+            child: const Text('Send Code'),
+            onPressed: () async {
+              FocusScope.of(context).unfocus();
+              setState(() {
+                confirmationCode = codeController.text;
+              });
+
+              ConfirmationEntry entry =
+                  ConfirmationEntry(confirmationCode, countdownTimer!.tick);
+              Connection().writeMessage('CONFIRMATION', entry);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final minutes = strDigits(myDuration.inMinutes.remainder(60));
     final seconds = strDigits(myDuration.inSeconds.remainder(60));
     final gameState = Provider.of<GameProvider>(context).state;
 
-    return Consumer<LocationProvider>(
-      builder: (context, locationProvider, child) {
-        return Scaffold(
-          appBar: header(context, false),
-          body: Container(
-            decoration: BoxDecoration(
-                color: currBackgroundColor(
-                    locationProvider.currentPosition.latitude,
-                    locationProvider.currentPosition.longitude,
-                    gameState.rounds[gameState.currentRound].latitude,
-                    gameState.rounds[gameState.currentRound].longitude)),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 120,
-                  ),
-                  print('Time Left:'),
-                  Text(
-                    '$minutes:$seconds',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 50),
-                  ),
-                ],
+    if (countdownTimer!.isActive) {
+      return Consumer<LocationProvider>(
+        builder: (context, locationProvider, child) {
+          return Scaffold(
+            appBar: header(context, false),
+            body: Container(
+              decoration: BoxDecoration(
+                  color: currBackgroundColor(
+                      locationProvider.currentPosition.latitude,
+                      locationProvider.currentPosition.longitude,
+                      gameState.rounds[gameState.currentRound].latitude,
+                      gameState.rounds[gameState.currentRound].longitude)),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                    ),
+                    print1('Time Left:'),
+                    Text(
+                      '$minutes:$seconds',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 50),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                    Text(
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                            color: Colors.white),
+                        'Distance to treasure'),
+                    Text(
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                            color: Colors.white),
+                        '${calculatedDistance.toStringAsFixed(2)} m'),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                    ),
+                    if (calculatedDistance <= 2) inputConfirmationCode(context)
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    } else {
+      return PlayersFinished(duration: myDuration);
+    }
   }
 
-  Padding print(String text) {
+  Padding print1(String text) {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Text(text,

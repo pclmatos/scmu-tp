@@ -3,6 +3,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:hotncold/pages/in_game/location_test.dart';
+import 'package:hotncold/pages/in_game/players_finished.dart';
+import 'package:hotncold/providers/game_provider.dart';
 import 'package:image/image.dart' as img;
 
 import 'package:hotncold/models/code_entry.dart';
@@ -12,10 +15,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hotncold/models/photo_entry.dart';
-import 'package:hotncold/pages/in_game/camera.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/services/location.dart';
+import 'package:provider/provider.dart';
 
 class Hider extends StatefulWidget {
   const Hider({super.key});
@@ -45,109 +48,124 @@ class _HiderState extends State<Hider> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: header(context, false),
-      body: Container(
-        decoration: background(),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.2,
-              ),
-              print1('You are the Hider.'),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
-              print1(
-                  'Please hide the treasure and take a photo of its location.'),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
-              print1(
-                  'After that use the hider card on the RFID reader of the treasure and input the displayed code in the box. Finally press the "Send Code" button to send the code to the server.'),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.06,
-              ),
-              Center(
-                child: FloatingActionButton(
-                    backgroundColor: Colors.black,
-                    onPressed: () async {
-                      XFile photo = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Camera()));
+    return Consumer<GameProvider>(
+      builder: (context, gameProvider, child) {
+        final gameState = gameProvider.state;
 
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) =>
-                                  DisplayPictureScreen(image: photo))));
-                      position = await LocationService().getCurrentLocation();
-
-                      final resizedImage = await resizeImage(photo, 288, 352);
-                      print(resizedImage.lengthInBytes);
-
-                      photoEntry = PhotoEntry(resizedImage);
-                    },
-                    child: const Icon(Icons.camera_alt)),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+        if (gameState.rounds[gameState.currentRound].latitude != 0 &&
+            gameState.rounds[gameState.currentRound].longitude != 0) {
+          return const LocationApp();
+        } else {
+          return Scaffold(
+            appBar: header(context, false),
+            body: Container(
+              decoration: background(),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
+                      height: MediaQuery.of(context).size.height * 0.2,
                     ),
+                    print1('You are the Hider.'),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      child: TextFormField(
-                        controller: codeController,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
-                          hintText: "Code",
-                          hintStyle: TextStyle(color: Colors.white),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
-                        ),
-                      ),
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
+                    print1(
+                        'Please hide the treasure and take a photo of its location.'),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.04,
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
+                    print1(
+                        'After that use the hider card on the RFID reader of the treasure and input the displayed code in the box. Finally press the "Send Code" button to send the code to the server.'),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      child: ElevatedButton(
-                        child: const Text('Send Code'),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            code = codeController.text;
-                          });
+                      height: MediaQuery.of(context).size.height * 0.06,
+                    ),
+                    // Center(
+                    //   child: FloatingActionButton(
+                    //       backgroundColor: Colors.black,
+                    //       onPressed: () async {
+                    //         XFile photo = await Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => const Camera()));
 
-                          codeEntry = CodeEntry(
-                              code, position.latitude, position.longitude);
-                          Connection().writeMessage('CODE', codeEntry);
-                          sleep(const Duration(seconds: 2));
-                          Connection().writeMessage(
-                            'PHOTO',
-                            photoEntry,
-                          );
-                        },
+                    //         await Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: ((context) =>
+                    //                     DisplayPictureScreen(image: photo))));
+                    //         position = await LocationService().getCurrentLocation();
+
+                    //         final resizedImage = await resizeImage(photo, 288, 352);
+                    //         print(resizedImage.lengthInBytes);
+
+                    //         photoEntry = PhotoEntry(resizedImage);
+                    //       },
+                    //       child: const Icon(Icons.camera_alt)),
+                    // ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: TextFormField(
+                              controller: codeController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                hintText: "Code",
+                                hintStyle: TextStyle(color: Colors.white),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.04,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: ElevatedButton(
+                              child: const Text('Send Code'),
+                              onPressed: () async {
+                                FocusScope.of(context).unfocus();
+                                position = await LocationService()
+                                    .getCurrentLocation();
+                                setState(() {
+                                  code = codeController.text;
+                                });
+
+                                codeEntry = CodeEntry(code, position.latitude,
+                                    position.longitude);
+                                Connection().writeMessage('CODE', codeEntry);
+                                // sleep(const Duration(seconds: 2));
+                                // Connection().writeMessage(
+                                //   'PHOTO',
+                                //   photoEntry,
+                                // );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 

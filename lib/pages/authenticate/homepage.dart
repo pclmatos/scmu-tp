@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotncold/models/user.dart';
 import 'package:hotncold/pages/game_room.dart';
-import 'package:hotncold/pages/in_game/players_finished.dart';
 import 'package:hotncold/pages/in_game/time_left.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';

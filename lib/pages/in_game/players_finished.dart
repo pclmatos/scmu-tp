@@ -3,10 +3,17 @@ import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/header.dart';
 
 class PlayersFinished extends StatelessWidget {
-  const PlayersFinished({super.key});
+  final Duration duration;
+
+  const PlayersFinished({super.key, required this.duration});
+
+  String strDigits(int n) => n.toString().padLeft(2, '0');
 
   @override
   Widget build(BuildContext context) {
+    final minutes = strDigits(duration.inMinutes.remainder(60));
+    final seconds = strDigits(duration.inSeconds.remainder(60));
+
     return Scaffold(
       appBar: header(context, true),
       body: Container(
@@ -19,7 +26,7 @@ class PlayersFinished extends StatelessWidget {
                 height: 60,
               ),
               print1(
-                  'Congratulations! You found the treasure in x:yz minutes.'),
+                  'Congratulations! You found the treasure in $minutes:$seconds minutes.'),
               const SizedBox(
                 height: 120,
               ),

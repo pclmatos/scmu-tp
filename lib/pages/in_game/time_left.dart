@@ -19,7 +19,7 @@ class TimeLeft extends StatefulWidget {
 
 class TimeLeftState extends State<TimeLeft> {
   late num calculatedDistance;
-  late String confirmationCode;
+  String confirmationCode = 'NONE';
   TextEditingController codeController = TextEditingController();
 
   final List<Color> colors = const [
@@ -131,68 +131,71 @@ class TimeLeftState extends State<TimeLeft> {
     final seconds = strDigits(myDuration.inSeconds.remainder(60));
     final gameState = Provider.of<GameProvider>(context).state;
 
-    if (countdownTimer!.isActive) {
-      return Consumer<LocationProvider>(
+    return Consumer<LocationProvider>(
         builder: (context, locationProvider, child) {
-          final currentPosition = locationProvider.currentPosition;
-          print(currentPosition);
-          return Scaffold(
-            appBar: header(context, false),
-            body: Container(
-              decoration: BoxDecoration(
-                  color: currBackgroundColor(
-                      currentPosition.latitude,
-                      currentPosition.longitude,
-                      gameState.rounds[gameState.currentRound].latitude,
-                      gameState.rounds[gameState.currentRound].longitude)),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                    ),
-                    print1('Time Left:'),
-                    Text(
-                      '$minutes:$seconds',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 50),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                    ),
-                    Text(
-                        style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                            color: Colors.white),
-                        'Distance to treasure'),
-                    Text(
-                        style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                            color: Colors.white),
-                        '${calculatedDistance.toStringAsFixed(2)} m'),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    if (calculatedDistance <= 2) inputConfirmationCode(context)
-                  ],
-                ),
+      final currentPosition = locationProvider.currentPosition;
+
+      if (countdownTimer!.isActive) {
+        return Scaffold(
+          appBar: header(context, false),
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            decoration: BoxDecoration(
+                color: currBackgroundColor(
+                    currentPosition.latitude,
+                    currentPosition.longitude,
+                    gameState.rounds[gameState.currentRound].latitude,
+                    gameState.rounds[gameState.currentRound].longitude)),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  ),
+                  print1('Time Left:'),
+                  Text(
+                    '$minutes:$seconds',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 50),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                  ),
+                  Text(
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.05,
+                          color: Colors.white),
+                      'Distance to treasure'),
+                  Text(
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.05,
+                          color: Colors.white),
+                      '${calculatedDistance.toStringAsFixed(2)} m'),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  // if (calculatedDistance <= 10)
+                  inputConfirmationCode(context)
+                ],
               ),
             ),
-          );
-        },
-      );
-    } else {
-      return PlayersFinished(duration: myDuration);
-    }
+          ),
+        );
+      } else {
+        Connection().writeMessage('CONFIRMATION',
+            ConfirmationEntry(confirmationCode, countdownTimer!.tick));
+        return PlayersFinished(duration: myDuration);
+      }
+    });
   }
+}
 
-  Padding print1(String text) {
-    return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Text(text,
-            style: const TextStyle(color: Colors.white, fontSize: 30)));
-  }
+Padding print1(String text) {
+  return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: Text(text,
+          style: const TextStyle(color: Colors.white, fontSize: 30)));
 }

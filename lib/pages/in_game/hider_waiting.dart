@@ -8,7 +8,8 @@ class HiderWaiting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, true),
+      appBar: header(context, false),
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: background(),
         child: Center(

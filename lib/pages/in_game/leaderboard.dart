@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hotncold/providers/room_state_provider.dart';
+import 'package:hotncold/models/score.dart';
+import 'package:hotncold/pages/tools/server_comm.dart';
+import 'package:hotncold/providers/game_provider.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:provider/provider.dart';
@@ -9,47 +11,55 @@ class Leaderboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RoomStateProvider>(
-        builder: (context, roomStateProvider, child) {
-      Padding print(String text) {
-        return Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Text(text,
-                style: const TextStyle(color: Colors.white, fontSize: 30)));
-      }
+    return Consumer<GameProvider>(builder: (context, game, child) {
+      final scores = game.state.scores;
 
       return Scaffold(
-        appBar: header(context, true),
+        appBar: header(context, false),
+        resizeToAvoidBottomInset: false,
         body: Container(
           decoration: background(),
           child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(
-                  height: 60,
-                ),
-                print('Leaderboard'),
-                const SizedBox(
-                  height: 60,
-                ),
-                print('Winner'),
-                const SizedBox(
-                  height: 100,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    print('2nd Place'),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    print('3rd Place')
-                  ],
-                )
-              ],
-            ),
-          ),
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: Text(
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width * 0.1),
+                      'Leaderboard')),
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: ListView.builder(
+                      itemCount: scores.length,
+                      itemBuilder: (context, index) {
+                        Score score = scores[index];
+                        return ListTile(
+                          title: Text(
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.05),
+                              '${index + 1}.  ${score.email}    ${score.score}'),
+                        );
+                      })),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: ElevatedButton(
+                    child: Text(
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.04),
+                        'Leave'),
+                    onPressed: () {
+                      Connection().closeConnection();
+                    },
+                  ))
+            ],
+          )),
         ),
       );
     });

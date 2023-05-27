@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: header(context, false),
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: background(),
         child: Center(

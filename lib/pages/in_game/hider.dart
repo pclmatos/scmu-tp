@@ -59,6 +59,7 @@ class _HiderState extends State<Hider> {
         } else {
           return Scaffold(
             appBar: header(context, false),
+            resizeToAvoidBottomInset: false,
             body: Container(
               decoration: background(),
               child: Center(

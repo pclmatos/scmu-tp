@@ -100,7 +100,7 @@ class Connection {
       RoomState newState = RoomState([], 0);
       provider.state = newState;
     } else if (provider is GameProvider) {
-      provider.state = Game([], 0);
+      provider.state = Game([], 0, []);
     }
   }
 
@@ -114,7 +114,7 @@ class Connection {
         break;
       case 'START':
         StartMessage msg = StartMessage.fromJson(json);
-        gameProvider = Provider.of<GameProvider>(context, listen: false);
+        // gameProvider = Provider.of<GameProvider>(context, listen: false);
         gameProvider.state = msg.game;
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const RoleWrapper()));
@@ -140,6 +140,9 @@ class Connection {
         );
         break;
       case 'FINISH':
+        StartMessage msg = StartMessage.fromJson(json);
+        // gameProvider = Provider.of<GameProvider>(context, listen: false);
+        gameProvider.state = msg.game;
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const Leaderboard()));
         break;

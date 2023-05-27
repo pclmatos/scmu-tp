@@ -30,6 +30,7 @@ class _RegisterState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: header(context, true),
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: background(),
         child: Center(

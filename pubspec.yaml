@@ -1,12 +1,12 @@
 name: hotncold
 description: SCMU project by Paulo Matos & João Dias.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 0.0.1+1
 
 environment:
-  sdk: '>=2.19.4 <4.0.0'
+  sdk: ">=2.19.4 <4.0.0"
 
 dependencies:
   flutter:
@@ -14,12 +14,9 @@ dependencies:
 
   provider: ^6.0.5
   google_fonts: ^4.0.4
-  http: ^0.13.6
-  connectivity: ^3.0.6
   auto_size_text: ^3.0.0
   firebase_core: ^2.11.0
   firebase_auth: ^4.5.0
-  web_socket_channel: ^2.4.0
   socket_io_client: ^2.0.2
   camera: ^0.10.5
   path_provider: ^2.0.15

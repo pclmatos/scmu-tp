@@ -76,22 +76,17 @@ class GameRoom extends StatelessWidget {
                         onPressed: () {
                           Connection().closeConnection();
                         },
-                        child: const Text("Leave")),
+                        child: Text(
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05),
+                            "Leave")),
                   ),
-                  const SizedBox(width: 20),
                   if (roomState
                           .containsPlayer(user.email!)
                           .compareTo("READY") !=
                       0)
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 4,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Connection().writeMessage(
-                                'READY', PlayerEntry(user.email!, "READY"));
-                          },
-                          child: const Text("Ready")),
-                    ),
+                    readyButton(context, user)
                 ],
               )
             ],
@@ -99,5 +94,25 @@ class GameRoom extends StatelessWidget {
         ),
       );
     });
+  }
+
+  Row readyButton(BuildContext context, MyUser user) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+        SizedBox(
+            width: MediaQuery.of(context).size.width / 4,
+            child: ElevatedButton(
+                onPressed: () {
+                  Connection()
+                      .writeMessage('READY', PlayerEntry(user.email!, "READY"));
+                },
+                child: Text(
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.05),
+                    "Ready"))),
+      ],
+    );
   }
 }

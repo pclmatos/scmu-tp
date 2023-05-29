@@ -43,7 +43,7 @@ class Leaderboard extends StatelessWidget {
                                   color: Colors.white,
                                   fontSize:
                                       MediaQuery.of(context).size.width * 0.05),
-                              '${index + 1}.  ${score.email}    ${score.score}'),
+                              '${index + 1}.  ${score.email}  -  ${score.score} points'),
                         );
                       })),
               SizedBox(

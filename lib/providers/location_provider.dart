@@ -18,4 +18,10 @@ class LocationProvider extends ChangeNotifier {
   }
 
   Position get currentPosition => _currPosition;
+
+  set state(Position newPos) {
+    _currPosition = newPos;
+
+    notifyListeners();
+  }
 }

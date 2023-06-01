@@ -41,7 +41,7 @@ class TimeLeftState extends State<TimeLeft> {
   }
 
   Timer? countdownTimer;
-  Duration myDuration = const Duration(minutes: 5);
+  Duration myDuration = const Duration(minutes: 1);
   String strDigits(int n) => n.toString().padLeft(2, '0');
 
   @override
@@ -60,7 +60,7 @@ class TimeLeftState extends State<TimeLeft> {
     setState(() {
       final seconds = myDuration.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
-        countdownTimer!.cancel();
+        countdownTimer?.cancel();
       } else {
         myDuration = Duration(seconds: seconds);
       }
@@ -187,6 +187,7 @@ class TimeLeftState extends State<TimeLeft> {
       } else {
         Connection().writeMessage('CONFIRMATION',
             ConfirmationEntry(confirmationCode, countdownTimer!.tick));
+
         return PlayersFinished(duration: myDuration);
       }
     });

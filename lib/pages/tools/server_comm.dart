@@ -91,8 +91,10 @@ class Connection {
       default:
         break;
     }
+
     var toSend = jsonEncode(message);
     socket.write(toSend);
+    socket.flush();
   }
 
   void resetProvider(dynamic provider) {

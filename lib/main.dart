@@ -19,10 +19,11 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<RoomStateProvider>(
-            create: (_) => RoomStateProvider()),
-        ChangeNotifierProvider<GameProvider>(create: (_) => GameProvider()),
+            create: (context) => RoomStateProvider()),
+        ChangeNotifierProvider<GameProvider>(
+            create: (context) => GameProvider()),
         ChangeNotifierProvider<LocationProvider>(
-            create: (_) => LocationProvider())
+            create: (context) => LocationProvider())
       ],
       child: const MyApp(),
     ),

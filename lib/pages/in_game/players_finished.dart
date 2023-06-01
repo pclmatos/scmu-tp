@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/tools/header.dart';
+import 'package:hotncold/providers/game_provider.dart';
+import 'package:provider/provider.dart';
 
 class PlayersFinished extends StatelessWidget {
   final Duration duration;
@@ -14,31 +16,38 @@ class PlayersFinished extends StatelessWidget {
     final minutes = strDigits(duration.inMinutes.remainder(60));
     final seconds = strDigits(duration.inSeconds.remainder(60));
 
-    return Scaffold(
-      appBar: header(context, true),
-      body: Container(
-        decoration: background(),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: 60,
+    return Consumer<GameProvider>(
+      builder: (context, gameProvider, child) {
+        final gameState = gameProvider.state;
+
+        return Scaffold(
+          appBar: header(context, true),
+          body: Container(
+            decoration: background(),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 60,
+                  ),
+                  print1(
+                      'Congratulations! You found the treasure in $minutes:$seconds minutes.'),
+                  const SizedBox(
+                    height: 120,
+                  ),
+                  print2(
+                      'x/${gameState.rounds[gameState.currentRound].seekers.length} players finished'),
+                  const SizedBox(
+                    height: 120,
+                  ),
+                  print2('Waiting for other players to finish...')
+                ],
               ),
-              print1(
-                  'Congratulations! You found the treasure in $minutes:$seconds minutes.'),
-              const SizedBox(
-                height: 120,
-              ),
-              print2('x/y players finished'),
-              const SizedBox(
-                height: 120,
-              ),
-              print2('Waiting for other players to finish...')
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

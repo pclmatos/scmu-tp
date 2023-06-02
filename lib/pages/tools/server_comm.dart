@@ -156,10 +156,7 @@ class Connection {
   void resetGameRoom(BuildContext context) {
     resetProvider(roomStateProvider);
     resetProvider(gameProvider);
-    //Navigator.pop(context);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Wrapper()));
   }
-
-  void resetGame(BuildContext context) {}
 }

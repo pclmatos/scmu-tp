@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:hotncold/models/firestore_user.dart';
 import 'package:hotncold/models/user.dart';
+import 'package:hotncold/pages/game_history.dart';
 import 'package:hotncold/pages/game_room.dart';
 import 'package:hotncold/pages/how_to_play.dart';
 import 'package:hotncold/pages/tools/header.dart';
@@ -9,6 +11,7 @@ import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/wrapper.dart';
 import 'package:hotncold/services/auth.dart';
 import 'package:hotncold/pages/tools/server_comm.dart';
+import 'package:hotncold/services/firestore_service.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -50,6 +53,35 @@ class HomePage extends StatelessWidget {
                             builder: (context) => const GameRoom()));
                   },
                 ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: ElevatedButton(
+                    child: Text(
+                      "Game History",
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.06),
+                    ),
+                    onPressed: () async {
+                      showDialog(
+                          context: context,
+                          builder: ((context) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }));
+                      FirestoreUser firestoreUser =
+                          await FirestoreService().getUser(user.email!);
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  GameHistory(user: firestoreUser)));
+                    }),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,

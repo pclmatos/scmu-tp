@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:hotncold/messages/errors.dart';
+import 'package:hotncold/models/firestore_user.dart';
 import 'package:hotncold/pages/tools/header.dart';
 import 'package:hotncold/pages/tools/background.dart';
 import 'package:hotncold/pages/wrapper.dart';
 import 'package:hotncold/services/auth.dart';
+import 'package:hotncold/services/firestore_service.dart';
 
 // ignore: use_key_in_widget_constructors
 class RegisterPage extends StatefulWidget {
@@ -147,6 +149,8 @@ class _RegisterState extends State<RegisterPage> {
                                   elevation: 0,
                                 ));
                               } else {
+                                await FirestoreService()
+                                    .addUser(FirestoreUser(email, []));
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

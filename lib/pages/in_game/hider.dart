@@ -147,14 +147,30 @@ class _HiderState extends State<Hider> {
                                   code = codeController.text;
                                 });
 
-                                codeEntry = CodeEntry(code, position.latitude,
-                                    position.longitude);
-                                Connection().writeMessage('CODE', codeEntry);
-                                // sleep(const Duration(seconds: 2));
-                                // Connection().writeMessage(
-                                //   'PHOTO',
-                                //   photoEntry,
-                                // );
+                                if (isNumeric(code) && code.length == 4) {
+                                  codeEntry = CodeEntry(code, position.latitude,
+                                      position.longitude);
+                                  Connection().writeMessage('CODE', codeEntry);
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Invalid Code'),
+                                        content: const Text(
+                                            'The code must be a 4 digit number!'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               },
                             ),
                           ),
@@ -175,6 +191,11 @@ class _HiderState extends State<Hider> {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Text(text, style: const TextStyle(color: Colors.white)));
+  }
+
+  bool isNumeric(String input) {
+    final numeric = num.tryParse(input);
+    return numeric != null;
   }
 
   Future<Uint8List> resizeImage(XFile imageFile, int width, int height) async {

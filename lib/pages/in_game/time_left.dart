@@ -131,11 +131,11 @@ class TimeLeftState extends State<TimeLeft> {
     final seconds = strDigits(myDuration.inSeconds.remainder(60));
     final gameState = Provider.of<GameProvider>(context).state;
 
-    return Consumer<LocationProvider>(
-        builder: (context, locationProvider, child) {
-      final currentPosition = locationProvider.currentPosition;
+    if (countdownTimer!.isActive) {
+      return Consumer<LocationProvider>(
+          builder: (context, locationProvider, child) {
+        final currentPosition = locationProvider.currentPosition;
 
-      if (countdownTimer!.isActive) {
         return Scaffold(
           appBar: header(context, false),
           resizeToAvoidBottomInset: false,
@@ -184,13 +184,13 @@ class TimeLeftState extends State<TimeLeft> {
             ),
           ),
         );
-      } else {
-        Connection().writeMessage('CONFIRMATION',
-            ConfirmationEntry(confirmationCode, countdownTimer!.tick));
+      });
+    } else {
+      Connection().writeMessage('CONFIRMATION',
+          ConfirmationEntry(confirmationCode, countdownTimer!.tick));
 
-        return PlayersFinished(duration: myDuration);
-      }
-    });
+      return PlayersFinished(duration: myDuration);
+    }
   }
 }
 

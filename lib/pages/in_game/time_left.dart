@@ -41,7 +41,7 @@ class TimeLeftState extends State<TimeLeft> {
   }
 
   Timer? countdownTimer;
-  Duration myDuration = const Duration(minutes: 1);
+  Duration myDuration = const Duration(minutes: 5);
   String strDigits(int n) => n.toString().padLeft(2, '0');
 
   @override
@@ -72,11 +72,11 @@ class TimeLeftState extends State<TimeLeft> {
 
     if (calculatedDistance >= 0 && calculatedDistance < 10) {
       return colors[0];
-    } else if (calculatedDistance < 20) {
+    } else if (calculatedDistance < 15) {
       return colors[1];
-    } else if (calculatedDistance < 30) {
+    } else if (calculatedDistance < 20) {
       return colors[2];
-    } else if (calculatedDistance < 40) {
+    } else if (calculatedDistance < 25) {
       return colors[3];
     } else if (calculatedDistance < 30) {
       return colors[4];
@@ -177,8 +177,7 @@ class TimeLeftState extends State<TimeLeft> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.05,
                   ),
-                  // if (calculatedDistance <= 10)
-                  inputConfirmationCode(context)
+                  if (calculatedDistance <= 10) inputConfirmationCode(context)
                 ],
               ),
             ),
